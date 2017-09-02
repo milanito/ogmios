@@ -16,4 +16,3 @@ export const fetchProject = (id) => {
       .catch(({ data }) => dispatch({ type: GET_PROJECT_FAILURE, payload: data }));
   };
 };
-

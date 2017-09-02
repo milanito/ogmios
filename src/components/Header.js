@@ -12,17 +12,33 @@ import { toggleDrawer } from '../actions/drawer';
 
 
 class Header extends Component {
+  fullLogout() {
+    this.props.toggleDrawer(false);
+    this.props.logoutUser();
+  }
+
   render() {
-    const { authenticated, t, isOpen, logoutUser, toggleDrawer } = this.props;
+    const { authenticated, t, isOpen, toggleDrawer } = this.props;
     return (
       <div>
         <AppBar title={t('NAVBAR.title')}
           iconElementLeft={<IconButton onClick={toggleDrawer.bind(null, true)}><ReorderIcon /></IconButton>}/>
         <Drawer open={isOpen && authenticated}>
           <IconButton onClick={toggleDrawer.bind(null, false)}><ClearIcon /></IconButton>
-          <MenuItem primaryText={t('NAVBAR.projects')} containerElement={<Link to="/projects"/>} />
-          <MenuItem primaryText={t('NAVBAR.clients')} containerElement={<Link to="/clients"/>} />
-          <MenuItem primaryText={t('NAVBAR.logout')} onClick={logoutUser.bind(null)} />
+          <MenuItem primaryText={t('NAVBAR.home')}
+            onClick={toggleDrawer.bind(null, false)}
+            containerElement={<Link to="/"/>} />
+          <MenuItem primaryText={t('NAVBAR.projects')}
+            onClick={toggleDrawer.bind(null, false)}
+            containerElement={<Link to="/projects"/>} />
+          <MenuItem primaryText={t('NAVBAR.clients')}
+            onClick={toggleDrawer.bind(null, false)}
+            containerElement={<Link to="/clients"/>} />
+          <MenuItem primaryText={t('NAVBAR.settings')}
+            onClick={toggleDrawer.bind(null, false)}
+            containerElement={<Link to="/settings"/>} />
+          <MenuItem primaryText={t('NAVBAR.logout')}
+            onClick={this.fullLogout.bind(this)} />
         </Drawer>
       </div>
     )

@@ -1,17 +1,36 @@
 import axios from 'axios';
 
+export const FETCHING_PROJECTS = 'FETCHING_PROJECTS';
 export const GET_PROJECTS = 'GET_PROJECTS';
 export const GET_PROJECTS_FAILURE = 'GET_PROJECTS_FAILURE';
+export const CREATING_PROJECTS = 'CREATING_PROJECTS';
+export const SAVING_PROJECTS = 'SAVING_PROJECTS';
+
+const _fetchProjects = (token) =>
+  axios
+  .get('http://localhost:3000/api/projects', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const projectsCreating = () => {
+  return (dispatch) => {
+    dispatch({ type: CREATING_PROJECTS });
+  }
+};
+
+export const projectsSaving = () => {
+  return (dispatch) => {
+    dispatch({ type: SAVING_PROJECTS });
+  }
+};
 
 export const fetchProjects = () => {
   return (dispatch) => {
+    dispatch({ type: FETCHING_PROJECTS });
     const token = localStorage.getItem('token');
-    return axios
-      .get('http://localhost:3000/api/projects', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+    return _fetchProjects(token)
       .then(({ data }) => dispatch({ type: GET_PROJECTS, projects: data }))
       .catch(({ data }) => dispatch({ type: GET_PROJECTS_FAILURE, payload: data }));
   };
@@ -19,20 +38,22 @@ export const fetchProjects = () => {
 
 export const projectsAdd = (props) => {
   const token = localStorage.getItem('token');
-  return (dispatch) =>
-    axios
-    .post('http://localhost:3000/api/projects', props, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(() => axios.get('http://localhost:3000/api/projects', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }))
-    .then(({ data }) => dispatch({ type: GET_PROJECTS, projects: data }))
-    .catch(({ data }) => dispatch({ type: GET_PROJECTS_FAILURE, payload: data }));
+
+  return (dispatch) => {
+    dispatch({ type: SAVING_PROJECTS });
+    return axios
+      .post('http://localhost:3000/api/projects', props, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        dispatch({ type: FETCHING_PROJECTS });
+        return _fetchProjects(token);
+      })
+      .then(({ data }) => dispatch({ type: GET_PROJECTS, projects: data }))
+      .catch(({ data }) => dispatch({ type: GET_PROJECTS_FAILURE, payload: data }));
+  };
 };
 
 export const projectsRemove = (id) => {
@@ -44,11 +65,10 @@ export const projectsRemove = (id) => {
         Authorization: `Bearer ${token}`
       }
     })
-    .then(() => axios.get('http://localhost:3000/api/projects', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }))
+    .then(() => {
+      dispatch({ type: FETCHING_PROJECTS });
+      return _fetchProjects(token);
+    })
     .then(({ data }) => dispatch({ type: GET_PROJECTS, projects: data }))
     .catch(({ data }) => dispatch({ type: GET_PROJECTS_FAILURE, payload: data }));
 };

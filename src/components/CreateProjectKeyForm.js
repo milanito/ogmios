@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { indexOf } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
 import { TextField, RaisedButton } from 'material-ui';
 
-import { projectsAdd } from '../actions/projects';
+import { projectKeysAdd } from '../actions/keys';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
   <TextField hintText={label}
@@ -15,7 +16,7 @@ const renderField = ({ input, type, label, meta: { touched, error } }) => (
     />
 );
 
-class CreateProjectForm extends Component {
+class CreateProjectKeyForm extends Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +24,7 @@ class CreateProjectForm extends Component {
   }
 
   handleFormSubmit(props) {
-    this.props.projectsAdd(props);
+    this.props.projectKeysAdd(props, this.props.project._id);
   }
 
   render() {
@@ -31,38 +32,47 @@ class CreateProjectForm extends Component {
     return (
       <div>
         <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-          <Field name="name" component={renderField} type="text"
-            label={t('PROJECT.placeholderName')} />
+          <Field name="key" component={renderField} type="text"
+            label={t('PROJECT.placeholderNewKey')} />
           <br />
-          <RaisedButton type="submit" label={t('LOGIN.validate')} />
+          <RaisedButton type="submit" label={t('KEYS.validate')} />
         </form>
       </div>
     )
   }
 }
 
-function validate(formProps) {
+function validate(formProps, props) {
   const errors = {};
 
-  if(!formProps.name) {
-    errors.name = 'name is required'
+  if(!formProps.key) {
+    errors.key = 'key is required'
+  }
+
+  const idx = indexOf(props.keys, formProps.key);
+
+  if (idx > -1) {
+    errors.key = 'key already exists'
   }
 
   return errors;
 }
 
 function onSubmitSuccess(result, dispatch) {
-  dispatch(reset('createProject'));
+  dispatch(reset('createProjectKey'));
 }
 
 const mapStateToProps = (state) => ({
+  project: state.project.item,
+  keys: state.keys.list
 });
 
-CreateProjectForm = reduxForm({ form: 'createProject', validate, onSubmitSuccess })(CreateProjectForm);
+CreateProjectKeyForm = reduxForm({ form: 'createProjectKey', validate, onSubmitSuccess })(CreateProjectKeyForm);
 
 const mapDispatchToProps = {
-  projectsAdd
+  projectKeysAdd
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(CreateProjectForm));
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(CreateProjectKeyForm));
+
 

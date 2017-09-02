@@ -6,20 +6,22 @@ import { IconButton, Dialog } from 'material-ui';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 import CreateProjectForm from './CreateProjectForm';
+import {
+  projectsSaving, projectsCreating
+} from '../actions/projects';
+
 
 class ProjectsToolBar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { openCreate: false };
+  toggleCreate(openCreate) {
+    if (openCreate) {
+      this.props.projectsCreating();
+    } else {
+      this.props.projectsSaving();
+    }
   }
 
-  toggleCreate(openCreate) {
-    this.setState({ openCreate });
-  };
-
   render() {
-    const { t } = this.props;
+    const { t, creating } = this.props;
     const actions = [];
     return (
       <div>
@@ -34,7 +36,7 @@ class ProjectsToolBar extends Component {
           title="Dialog With Actions"
           actions={actions}
           modal={false}
-          open={this.state.openCreate}
+          open={creating}
           onRequestClose={this.toggleCreate.bind(this, false)}>
           <CreateProjectForm />
         </Dialog>
@@ -44,9 +46,12 @@ class ProjectsToolBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  creating: state.projects.creating
 });
 
 const mapDispatchToProps = {
+  projectsSaving,
+  projectsCreating
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate()(ProjectsToolBar));

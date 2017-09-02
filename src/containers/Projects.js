@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { translate } from 'react-i18next';
-import { Card } from 'material-ui/Card';
-import { List } from 'material-ui';
+import { List, Card, Divider } from 'material-ui';
 
 import ProjectCard from '../components/ProjectCard';
 import ProjectsToolBar from '../components/ProjectsToolBar';
@@ -22,8 +21,12 @@ class Projects extends Component {
       <Card>
         <ProjectsToolBar />
         <List>
-          {map(projects, (project, i) =>
-            (<ProjectCard key={i} project={project} />))}
+          {map(projects, (project) =>(
+            <div key={project._id}>
+              <ProjectCard project={project} />
+              <Divider />
+            </div>
+          ))}
         </List>
       </Card>
     );
