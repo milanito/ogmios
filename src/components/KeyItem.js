@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ClearIcon from 'material-ui-icons/Clear'
+import DeleteIcon from 'material-ui-icons/Delete'
 import DoneIcon from 'material-ui-icons/Done'
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { IconButton, FlatButton } from 'material-ui';
+import { IconButton, FlatButton, Divider } from 'material-ui';
 import { ListItem } from 'material-ui/List';
 import { map, has, isEmpty, get } from 'lodash';
 
@@ -18,13 +19,16 @@ class KeyItem extends Component {
   render() {
     const { item, locales } = this.props;
     return (
-      <ListItem rightIcon={<IconButton onClick={this.removeKey.bind(this)}><ClearIcon /></IconButton>}>
-        <h3>{item}</h3>
-        {map(locales, (locale, i) =>
-          <FlatButton key={i} label={locale.code}
-            icon={has(locale.keys, item) && !isEmpty(get(locale.keys, item, '')) ? <DoneIcon /> : <ClearIcon />} />
-        )}
-      </ListItem>
+      <div>
+        <ListItem rightIcon={<IconButton onClick={this.removeKey.bind(this)}><DeleteIcon /></IconButton>}>
+          <h3>{item}</h3>
+          {map(locales, (locale, i) =>
+            <FlatButton key={i} label={locale.code}
+              icon={has(locale.keys, item) && !isEmpty(get(locale.keys, item, '')) ? <DoneIcon /> : <ClearIcon />} />
+          )}
+        </ListItem>
+        <Divider />
+      </div>
     );
   }
 }

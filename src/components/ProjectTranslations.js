@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import ClearIcon from 'material-ui-icons/Clear';
+import VisibilityIcon from 'material-ui-icons/Visibility';
+import VisibilityOffIcon from 'material-ui-icons/VisibilityOff';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { SelectField, MenuItem } from 'material-ui';
+import { SelectField, MenuItem, IconButton } from 'material-ui';
 import { map, filter, isEqual, isEmpty } from 'lodash';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
@@ -11,7 +14,7 @@ class ProjectLocales extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { localeOne: '', localeTwo: '' };
+    this.state = { localeOne: '', localeTwo: '', visible: true };
   }
 
   handleChangeOne(event, index, localeOne) {
@@ -22,6 +25,40 @@ class ProjectLocales extends Component {
     this.setState({ localeTwo });
   }
 
+  switchVisibility(visible) {
+    this.setState({ visible });
+  }
+
+  clearLocales() {
+    this.setState({
+      localeOne: '',
+      localeTwo: ''
+    });
+  }
+
+  renderVisibleIcon() {
+    if (this.state.visible) {
+      return (
+        <IconButton onClick={this.switchVisibility.bind(this, false)}>
+          <VisibilityIcon />
+        </IconButton>
+      );
+    }
+    return (
+      <IconButton onClick={this.switchVisibility.bind(this, true)}>
+        <VisibilityOffIcon />
+      </IconButton>
+    );
+  }
+
+  renderClearIcon() {
+    return (
+      <IconButton onClick={this.clearLocales.bind(this)}>
+        <ClearIcon />
+      </IconButton>
+    )
+  }
+
   renderToolBar() {
     const { locales, t } = this.props;
     return (
@@ -29,6 +66,12 @@ class ProjectLocales extends Component {
         <Toolbar>
           <ToolbarGroup>
             <ToolbarTitle text={t('PROJECT.localesChoice')} />
+            <ToolbarSeparator />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            {!isEmpty(this.state.localeOne) || !isEmpty(this.state.localeTwo) ? this.renderVisibleIcon() : <div></div>}
+            <ToolbarSeparator />
+            {!isEmpty(this.state.localeOne) || !isEmpty(this.state.localeTwo) ? this.renderClearIcon() : <div></div>}
             <ToolbarSeparator />
           </ToolbarGroup>
           <ToolbarGroup>
@@ -59,7 +102,7 @@ class ProjectLocales extends Component {
     if (!isEmpty(this.state.localeOne)) {
       return (
         <TranslationsList localeOne={this.state.localeOne}
-          localeTwo={this.state.localeTwo} />
+          localeTwo={this.state.localeTwo} visible={this.state.visible} />
       );
     }
     return (<div></div>);

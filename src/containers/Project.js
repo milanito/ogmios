@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { Card } from 'material-ui';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 import ProjectMain from '../components/ProjectMain';
@@ -23,20 +24,22 @@ class Project extends Component {
   renderProject() {
     const { t } = this.props;
     return (
-      <Tabs>
-        <Tab label={t('PROJECT.tabDetails')}>
-          <ProjectMain />
-        </Tab>
-        <Tab label={t('PROJECT.tabLocales')}>
-          <ProjectLocales />
-        </Tab>
-        <Tab label={t('PROJECT.tabKeys')}>
-          <ProjectKeys />
-        </Tab>
-        <Tab label={t('PROJECT.tabTranslations')}>
-          <ProjectTranslations />
-        </Tab>
-      </Tabs>
+      <Card>
+        <Tabs>
+          <Tab label={t('PROJECT.tabDetails')}>
+            <ProjectMain />
+          </Tab>
+          <Tab label={t('PROJECT.tabLocales')}>
+            <ProjectLocales />
+          </Tab>
+          <Tab label={t('PROJECT.tabKeys')}>
+            <ProjectKeys />
+          </Tab>
+          <Tab label={t('PROJECT.tabTranslations')}>
+            <ProjectTranslations />
+          </Tab>
+        </Tabs>
+      </Card>
     );
   }
 

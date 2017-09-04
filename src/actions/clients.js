@@ -17,3 +17,14 @@ export const fetchClients = () => {
   };
 };
 
+export const clientsSaving = () => {
+  return (dispatch) => {};
+};
+
+export const clientsCreating = () => {
+  return (dispatch) => {};
+};
+
+export const clientsRemove = () => {
+  return (dispatch) => {};
+};

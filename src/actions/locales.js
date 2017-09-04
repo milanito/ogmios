@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { set } from 'lodash';
 
 export const FETCHING_LOCALES = 'FETCHING_LOCALES';
 export const GET_LOCALES = 'GET_LOCALES';
@@ -88,6 +87,28 @@ export const projectLocalesUpdate = (locale, id, key, value) => {
       .patch(`http://localhost:3000/api/projects/${id}/locales`, {
         locale,
         keys
+      },{
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        dispatch({ type: FETCHING_LOCALES });
+        return _fetchProjectLocales(token, id);
+      })
+      .then(({ data }) => dispatch({ type: GET_LOCALES, locales: data }))
+      .catch(({ data }) => dispatch({ type: GET_LOCALES_FAILURE, payload: data }));
+  };
+};
+
+export const projectLocalesMultipleUpdate = (locales, id) => {
+  const token = localStorage.getItem('token');
+
+  return (dispatch) => {
+    dispatch({ type: SAVING_LOCALES });
+    return axios
+      .patch(`http://localhost:3000/api/projects/${id}/locales/multiple`, {
+        locales
       },{
         headers: {
           Authorization: `Bearer ${token}`

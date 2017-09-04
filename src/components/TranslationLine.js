@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import DoneIcon from 'material-ui-icons/Done'
-import ClearIcon from 'material-ui-icons/Clear'
+import DoneIcon from 'material-ui-icons/Done';
+import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { TextField, IconButton } from 'material-ui';
@@ -8,9 +8,14 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import { get, find, isEqual, isEmpty, set, forEach } from 'lodash';
+import {
+  get, find, isEqual, isEmpty, set, reduce
+} from 'lodash';
 
-import { projectLocalesUpdate } from '../actions/locales';
+import {
+  projectLocalesUpdate,
+  projectLocalesMultipleUpdate,
+} from '../actions/locales';
 
 
 class TranslationLine extends Component {
@@ -52,25 +57,41 @@ class TranslationLine extends Component {
   clearKeyLocales() {
     const { localeOne, localeTwo, translationKey, project } = this.props;
 
-    forEach([ localeOne, localeTwo ], (loc) => {
+    const locs = reduce([localeOne, localeTwo], (total, loc) => {
       if (!isEmpty(loc)) {
-        this.props.projectLocalesUpdate(loc, project._id, translationKey, '');
+        const translations = {};
+        translations[translationKey] = '';
+        total.push({
+          code: loc,
+          translations
+        });
       }
-    });
+      return total;
+    }, []);
+
+    this.props.projectLocalesMultipleUpdate(locs, project._id);
   }
 
   saveKeyLocales() {
     const { localeOne, localeTwo, translationKey, project } = this.props;
     const { firstValue, secondValue } = this.state;
 
-    forEach([
+    const locs = reduce([
       { loc: localeOne, val: firstValue},
       { loc: localeTwo, val: secondValue }
-    ], ({loc, val}) => {
+    ], (total, {loc, val}) => {
       if (!isEmpty(loc) && !isEmpty(val)) {
-        this.props.projectLocalesUpdate(loc, project._id, translationKey, val);
+        const translations = {};
+        translations[translationKey] = val;
+        total.push({
+          code: loc,
+          translations
+        });
       }
-    });
+      return total;
+    }, []);
+
+    this.props.projectLocalesMultipleUpdate(locs, project._id);
   }
 
   render() {
@@ -95,7 +116,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  projectLocalesUpdate
+  projectLocalesUpdate,
+  projectLocalesMultipleUpdate,
 };
 
 

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
-import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import { List, Card, Divider } from 'material-ui';
+
+import ClientCard from '../components/ClientCard';
+import ClientsToolBar from '../components/ClientsToolBar';
 
 import {
   fetchClients
@@ -13,24 +16,20 @@ class Clients extends Component {
     this.props.fetchClients();
   }
 
-  renderClients() {
-    const clients = this.props.clients || [];
-
-    return map(clients, (client, i) => {
-      const url = `/client/${client.id}`;
-      return <li key={i}><Link to={url}>{client.name}</Link></li>
-    });
-  }
-
   render() {
-    const { t } = this.props;
+    const { clients } = this.props;
     return (
-      <div>
-        <h1>{t('CLIENTS.title')}</h1>
-        <ul>
-          { this.renderClients() }
-        </ul>
-      </div>
+      <Card>
+        <ClientsToolBar />
+        <List>
+          {map(clients, (client, i) =>(
+            <div key={client.id}>
+              <ClientCard client={client}/>
+              <Divider />
+            </div>
+          ))}
+        </List>
+      </Card>
     );
   }
 }

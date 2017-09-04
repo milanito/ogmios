@@ -8,14 +8,29 @@ import {
     TableHeaderColumn,
     TableRow,
 } from 'material-ui/Table';
-import { map, get, find, isEqual } from 'lodash';
+import {
+  map, get, find, isEqual, reduce, filter,
+  uniq, union, isEmpty
+} from 'lodash';
 
 import TranslationLine from './TranslationLine';
 
 
 class TranslationsList extends Component {
   render() {
-    const { keys, locales, localeOne, localeTwo, t } = this.props;
+    const { keys, locales, localeOne, localeTwo, t, visible } = this.props;
+    let realKeys = keys.sort();
+    if (!visible) {
+      realKeys = reduce([localeOne, localeTwo], (total, code) => {
+        const locale = find(locales, lcl => isEqual(lcl.code, code));
+        if (!locale) {
+          return total;
+        }
+
+        return uniq(union(total, filter(keys,
+          key => isEmpty(get(get(locale, 'keys', {}), key, '')))));
+      }, []).sort();
+    }
     return (
       <Table>
         <TableHeader displaySelectAll={false}>
@@ -29,7 +44,7 @@ class TranslationsList extends Component {
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-          {map(keys, (key, i) => <TranslationLine key={i} translationKey={key} localeOne={localeOne} localeTwo={localeTwo} />)}
+          {map(realKeys, (key, i) => <TranslationLine key={i} translationKey={key} localeOne={localeOne} localeTwo={localeTwo} />)}
         </TableBody>
       </Table>
     );

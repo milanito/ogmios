@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { indexOf } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
-import { TextField, RaisedButton } from 'material-ui';
+import { TextField } from 'material-ui';
 
 import { projectKeysAdd } from '../actions/keys';
 
