@@ -3,8 +3,8 @@ import ClearIcon from 'material-ui-icons/Clear'
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { ListItem } from 'material-ui/List';
-import { divide, filter, has } from 'lodash';
 import { IconButton, LinearProgress } from 'material-ui';
+import { divide, filter, has, get, isEmpty } from 'lodash';
 
 import { projectLocalesRemove } from '../actions/locales';
 
@@ -17,7 +17,7 @@ class LocaleItem extends Component {
   render() {
     const { item, keys } = this.props;
     const localeKeys = item.keys || {};
-    const okKeys = filter(keys, key => has(localeKeys, key));
+    const okKeys = filter(keys, key => has(localeKeys, key) && !isEmpty(get(localeKeys, key, '')));
     return (
       <ListItem rightIcon={<IconButton onClick={this.removeLocale.bind(this)}><ClearIcon /></IconButton>}>
         <h3>{item.code}</h3>

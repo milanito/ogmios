@@ -34,7 +34,7 @@ class CreateProjectForm extends Component {
           <Field name="name" component={renderField} type="text"
             label={t('PROJECT.placeholderName')} />
           <br />
-          <RaisedButton type="submit" label={t('LOGIN.validate')} />
+          <RaisedButton type="submit" label={t('PROJECT.validate')} />
         </form>
       </div>
     )

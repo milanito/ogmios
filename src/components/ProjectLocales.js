@@ -3,17 +3,28 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map } from 'lodash';
 import { List } from 'material-ui';
+import {
+  Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle
+} from 'material-ui/Toolbar';
 
 import CreateProjectLocaleForm from './CreateProjectLocaleForm';
 import LocaleItem from './LocaleItem';
 
 class ProjectLocales extends Component {
   render() {
-    const { locales } = this.props;
+    const { locales, t } = this.props;
     return (
       <div>
-        <CreateProjectLocaleForm />
-        <h3>Total: {locales.length}</h3>
+        <Toolbar>
+          <ToolbarGroup>
+            <ToolbarTitle text={t('PROJECT.totalLocales')} />
+            <ToolbarTitle text={locales.length} />
+            <ToolbarSeparator />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <CreateProjectLocaleForm />
+          </ToolbarGroup>
+        </Toolbar>
         <List>
           {map(locales, (locale, i) => <LocaleItem key={i} item={locale} />)}
         </List>

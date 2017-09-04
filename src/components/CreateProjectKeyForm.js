@@ -34,8 +34,6 @@ class CreateProjectKeyForm extends Component {
         <form onSubmit={handleSubmit(this.handleFormSubmit)}>
           <Field name="key" component={renderField} type="text"
             label={t('PROJECT.placeholderNewKey')} />
-          <br />
-          <RaisedButton type="submit" label={t('KEYS.validate')} />
         </form>
       </div>
     )

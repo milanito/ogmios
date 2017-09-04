@@ -33,10 +33,10 @@ class ProjectsToolBar extends Component {
           </ToolbarGroup>
         </Toolbar>
         <Dialog
-          title="Dialog With Actions"
+          title={t('PROJECTS.createNew')}
           actions={actions}
           modal={false}
-          open={creating}
+          open={creating || false}
           onRequestClose={this.toggleCreate.bind(this, false)}>
           <CreateProjectForm />
         </Dialog>

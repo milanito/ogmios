@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import ReorderIcon from 'material-ui-icons/Reorder';
+import HomeIcon from 'material-ui-icons/Home';
+import BookIcon from 'material-ui-icons/Book';
+import SettingsIcon from 'material-ui-icons/Settings';
+import SettingsRemoteIcon from 'material-ui-icons/SettingsRemote';
+import CancelIcon from 'material-ui-icons/Cancel';
 import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -26,18 +31,23 @@ class Header extends Component {
         <Drawer open={isOpen && authenticated}>
           <IconButton onClick={toggleDrawer.bind(null, false)}><ClearIcon /></IconButton>
           <MenuItem primaryText={t('NAVBAR.home')}
+            leftIcon={<HomeIcon />}
             onClick={toggleDrawer.bind(null, false)}
             containerElement={<Link to="/"/>} />
           <MenuItem primaryText={t('NAVBAR.projects')}
+            leftIcon={<BookIcon />}
             onClick={toggleDrawer.bind(null, false)}
             containerElement={<Link to="/projects"/>} />
           <MenuItem primaryText={t('NAVBAR.clients')}
+            leftIcon={<SettingsRemoteIcon />}
             onClick={toggleDrawer.bind(null, false)}
             containerElement={<Link to="/clients"/>} />
           <MenuItem primaryText={t('NAVBAR.settings')}
+            leftIcon={<SettingsIcon />}
             onClick={toggleDrawer.bind(null, false)}
             containerElement={<Link to="/settings"/>} />
           <MenuItem primaryText={t('NAVBAR.logout')}
+            leftIcon={<CancelIcon />}
             onClick={this.fullLogout.bind(this)} />
         </Drawer>
       </div>
