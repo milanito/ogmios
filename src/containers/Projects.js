@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { translate } from 'react-i18next';
-import { List, Card, Divider } from 'material-ui';
+import { List, Card, Paper } from 'material-ui';
 
 import ProjectCard from '../components/ProjectCard';
 import ProjectsToolBar from '../components/ProjectsToolBar';
-import {
-  fetchProjects
-} from '../actions/projects';
+import { fetchProjects } from '../actions/projects';
+import { listStyle, elementStyle } from '../styles/lists';
 
 class Projects extends Component {
   componentDidMount() {
@@ -17,19 +16,21 @@ class Projects extends Component {
 
   render() {
     const { projects } = this.props;
-    return (
-      <Card>
-        <ProjectsToolBar />
-        <List>
-          {map(projects, (project) =>(
-            <div key={project._id}>
+    if (projects) {
+      return (
+        <Card>
+          <ProjectsToolBar />
+          <List style={listStyle}>
+            {map(projects, (project) =>(
+            <Paper style={elementStyle} key={project._id}>
               <ProjectCard project={project} />
-              <Divider />
-            </div>
-          ))}
-        </List>
-      </Card>
-    );
+            </Paper>
+            ))}
+          </List>
+        </Card>
+      );
+    }
+    return (<div></div>);
   }
 }
 

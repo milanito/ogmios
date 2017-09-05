@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DeleteIcon from 'material-ui-icons/Delete';
-import Flag from "react-country-flag";
+import Flag from 'react-country-flag';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { ListItem } from 'material-ui/List';

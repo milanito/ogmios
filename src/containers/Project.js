@@ -44,8 +44,8 @@ class Project extends Component {
   }
 
   render() {
-    const { project } = this.props;
-    if (project) {
+    const { project, fetching } = this.props;
+    if (project && !fetching) {
       return this.renderProject();
     }
     return (<div></div>)
@@ -53,7 +53,8 @@ class Project extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  project: state.project.item
+  project: state.project.item,
+  fetching: state.project.fetching
 });
 
 const mapDispatchToProps = {

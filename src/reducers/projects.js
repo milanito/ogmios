@@ -13,7 +13,7 @@ export default (state = {}, action) => {
     case SAVING_PROJECTS:
       return { ...state, creating: false };
     case FETCHING_PROJECTS:
-      return { ...state, fetching: true };
+      return { ...state, fetching: true, creating: false };
     case GET_PROJECTS:
       return { ...state, list: action.projects, fetching: false };
     case GET_PROJECTS_FAILURE:

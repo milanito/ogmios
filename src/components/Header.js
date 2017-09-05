@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LoopIcon from 'material-ui-icons/Loop';
 import ReorderIcon from 'material-ui-icons/Reorder';
 import HomeIcon from 'material-ui-icons/Home';
 import BookIcon from 'material-ui-icons/Book';
@@ -22,12 +23,26 @@ class Header extends Component {
     this.props.logoutUser();
   }
 
+  renderRightIcon() {
+    const { creatingProjects, fetchingProjects, savingProject, fetchingProject } = this.props;
+
+    if (creatingProjects || fetchingProjects || savingProject || fetchingProject) {
+      return (<IconButton><LoopIcon /></IconButton>);
+    }
+    return (<IconButton />);
+  }
+
   render() {
     const { authenticated, t, isOpen, toggleDrawer } = this.props;
     return (
       <div>
         <AppBar title={t('NAVBAR.title')}
-          iconElementLeft={<IconButton onClick={toggleDrawer.bind(null, true)}><ReorderIcon /></IconButton>}/>
+          iconElementRight={this.renderRightIcon()}
+          iconElementLeft={
+            <IconButton onClick={toggleDrawer.bind(null, true)}>
+              <ReorderIcon />
+            </IconButton>
+          }/>
         <Drawer open={isOpen && authenticated}>
           <IconButton onClick={toggleDrawer.bind(null, false)}><ClearIcon /></IconButton>
           <MenuItem primaryText={t('NAVBAR.home')}
@@ -57,7 +72,11 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   authenticated: state.auth.authenticated,
-  isOpen: state.drawer.isOpen
+  isOpen: state.drawer.isOpen,
+  creatingProject: state.projects.creating,
+  fetchingProjects: state.projects.fetching,
+  savingProject: state.project.creating,
+  fetchingProject: state.project.fetching,
 });
 
 const mapDispatchToProps = {

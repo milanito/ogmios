@@ -17,13 +17,13 @@ const _fetchProjects = (token) =>
 export const projectsCreating = () => {
   return (dispatch) => {
     dispatch({ type: CREATING_PROJECTS });
-  }
+  };
 };
 
 export const projectsSaving = () => {
   return (dispatch) => {
     dispatch({ type: SAVING_PROJECTS });
-  }
+  };
 };
 
 export const fetchProjects = () => {
@@ -40,7 +40,7 @@ export const projectsAdd = (props) => {
   const token = localStorage.getItem('token');
 
   return (dispatch) => {
-    dispatch({ type: SAVING_PROJECTS });
+    dispatch({ type: CREATING_PROJECTS });
     return axios
       .post('http://localhost:3000/api/projects', props, {
         headers: {

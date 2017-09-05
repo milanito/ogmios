@@ -26,7 +26,7 @@ class ProjectKeys extends Component {
           </ToolbarGroup>
         </Toolbar>
         <List>
-          {map(keys, (key, i) => <KeyItem key={i} item={key} />)}
+          {map(keys.sort(), (key, i) => <KeyItem key={i} item={key} />)}
         </List>
       </div>
     );

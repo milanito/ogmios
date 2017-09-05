@@ -32,7 +32,7 @@ class CreateProjectForm extends Component {
       <div>
         <form onSubmit={handleSubmit(this.handleFormSubmit)}>
           <Field name="name" component={renderField} type="text"
-            label={t('PROJECT.placeholderName')} />
+            label={t('PROJECTS.placeholderName')} />
           <br />
           <RaisedButton type="submit" label={t('PROJECT.validate')} />
         </form>

@@ -2,28 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
-import {
-  fetchClient
-} from '../actions/client';
+import ClientMain from '../components/ClientMain';
+import { fetchClient } from '../actions/client';
+import { fetchProjects } from '../actions/projects';
 
 class Client extends Component {
   componentDidMount() {
     this.props.fetchClient(this.props.match.params.clientid);
-  }
-
-  renderClient() {
-    const { client, t } = this.props;
-    return (
-      <div>
-        <h1>{t('CLIENT.title')} {client.name}</h1>
-      </div>
-    );
+    this.props.fetchProjects();
   }
 
   render() {
     const { client } = this.props;
     if (client) {
-      return this.renderClient();
+      return (<ClientMain />)
     }
     return (<div></div>)
   }
@@ -34,7 +26,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  fetchClient
+  fetchClient,
+  fetchProjects
 };
 
 

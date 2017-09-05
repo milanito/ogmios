@@ -21,7 +21,7 @@ class ProjectsToolBar extends Component {
   }
 
   render() {
-    const { t, creating } = this.props;
+    const { t, creating, projects } = this.props;
     const actions = [];
     return (
       <div>
@@ -29,6 +29,13 @@ class ProjectsToolBar extends Component {
           <ToolbarGroup>
             <ToolbarTitle text={t('PROJECTS.title')} />
             <ToolbarSeparator />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <ToolbarTitle text={t('PROJECTS.total')} />
+            <ToolbarTitle text={projects.length} />
+            <ToolbarSeparator />
+          </ToolbarGroup>
+          <ToolbarGroup>
             <IconButton onClick={this.toggleCreate.bind(this, true)}><AddIcon /></IconButton>
           </ToolbarGroup>
         </Toolbar>
@@ -46,7 +53,8 @@ class ProjectsToolBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  creating: state.projects.creating
+  creating: state.projects.creating,
+  projects: state.projects.list
 });
 
 const mapDispatchToProps = {
