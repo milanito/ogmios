@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Card } from 'material-ui';
+import { Card, LinearProgress } from 'material-ui';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 import ProjectMain from '../components/ProjectMain';
@@ -48,7 +48,7 @@ class Project extends Component {
     if (project && !fetching) {
       return this.renderProject();
     }
-    return (<div></div>)
+    return (<LinearProgress mode="indeterminate" />)
   }
 }
 

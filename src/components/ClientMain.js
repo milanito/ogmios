@@ -8,7 +8,7 @@ import {
   Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle
 } from 'material-ui/Toolbar';
 import {
-  TextField, RaisedButton, List, Paper
+  TextField, RaisedButton, List, Paper, Divider
 } from 'material-ui';
 
 import ProjectCard from '../components/ProjectCard';
@@ -64,13 +64,22 @@ class ClientMain extends Component {
               label={t('CLIENT.validate')} />
           </ToolbarGroup>
         </Toolbar>
-        <List style={listStyle}>
-          {map(client.projects, (project) =>(
-          <Paper style={elementStyle} key={project._id}>
-            <ProjectCard project={project} />
-          </Paper>
-          ))}
-        </List>
+        <Paper>
+          <h3>{t('CLIENT.projectsList')}</h3>
+          <h4>{t('CLIENT.fieldId')}</h4>
+          <i>{client.id}</i>
+          <h4>{t('CLIENT.fieldToken')}</h4>
+          <i>{client.token}</i>
+          <Divider />
+          <h3>{t('CLIENT.projectsList')}</h3>
+          <List style={listStyle}>
+            {map(client.projects, (project) =>(
+            <Paper style={elementStyle} key={project._id}>
+              <ProjectCard project={project} />
+            </Paper>
+            ))}
+          </List>
+        </Paper>
       </div>
     );
   }

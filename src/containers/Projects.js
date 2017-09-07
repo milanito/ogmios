@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { translate } from 'react-i18next';
-import { List, Card, Paper } from 'material-ui';
+import { List, Card, Paper, LinearProgress } from 'material-ui';
 
 import ProjectCard from '../components/ProjectCard';
 import ProjectsToolBar from '../components/ProjectsToolBar';
@@ -17,20 +17,32 @@ class Projects extends Component {
   render() {
     const { projects } = this.props;
     if (projects) {
+      return this.renderProjects();
+    }
+    return (<LinearProgress mode="indeterminate" />)
+  }
+
+  renderProjects() {
+    const { projects, t } = this.props;
+    if (projects.length === 0) {
       return (
         <Card>
-          <ProjectsToolBar />
-          <List style={listStyle}>
-            {map(projects, (project) =>(
-            <Paper style={elementStyle} key={project._id}>
-              <ProjectCard project={project} />
-            </Paper>
-            ))}
-          </List>
+          <h3>{t('PROJECTS.noProject')}</h3>
         </Card>
-      );
+      )
     }
-    return (<div></div>);
+    return (
+      <Card>
+        <ProjectsToolBar />
+        <List style={listStyle}>
+          {map(projects, (project) =>(
+          <Paper style={elementStyle} key={project._id}>
+            <ProjectCard project={project} />
+          </Paper>
+          ))}
+        </List>
+      </Card>
+    );
   }
 }
 

@@ -11,6 +11,7 @@ import {
 
 import ProjectUsers from './ProjectUsers';
 import DownloadProject from './DownloadProject';
+import UploadProject from './UploadProject';
 import { projectSave } from '../actions/project';
 
 class ProjectMain extends Component {
@@ -82,6 +83,7 @@ class ProjectMain extends Component {
           modal={false}
           open={isUploading}
           onRequestClose={this.handleFile.bind(this, 'isUploading', false)}>
+          <UploadProject />
         </Dialog>
         <ProjectUsers />
       </div>
