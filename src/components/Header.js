@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoopIcon from 'material-ui-icons/Loop';
 import ReorderIcon from 'material-ui-icons/Reorder';
-import HomeIcon from 'material-ui-icons/Home';
 import BookIcon from 'material-ui-icons/Book';
 import SettingsIcon from 'material-ui-icons/Settings';
 import SettingsRemoteIcon from 'material-ui-icons/SettingsRemote';
@@ -45,10 +44,6 @@ class Header extends Component {
           }/>
         <Drawer open={isOpen && authenticated}>
           <IconButton onClick={toggleDrawer.bind(null, false)}><ClearIcon /></IconButton>
-          <MenuItem primaryText={t('NAVBAR.home')}
-            leftIcon={<HomeIcon />}
-            onClick={toggleDrawer.bind(null, false)}
-            containerElement={<Link to="/"/>} />
           <MenuItem primaryText={t('NAVBAR.projects')}
             leftIcon={<BookIcon />}
             onClick={toggleDrawer.bind(null, false)}

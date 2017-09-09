@@ -3,11 +3,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { createBrowserHistory } from 'history';
+
+import history from '../history';
 
 export default function (ComposedComponent) {
-  const history = createBrowserHistory();
-
   class NotAuthentication extends Component {
     componentWillMount() {
       if (this.props.authenticated) {

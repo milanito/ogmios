@@ -10,7 +10,7 @@ class NotFound extends Component {
     return (
       <Card>
         <h1>{t('NOTFOUND.title')}</h1>
-        <Link to="/">{t('NOTFOUND.homeLink')}</Link>
+        <Link to="/projects">{t('NOTFOUND.homeLink')}</Link>
       </Card>
     );
   }

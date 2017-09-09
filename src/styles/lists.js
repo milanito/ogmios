@@ -1,9 +1,14 @@
 export const listStyle = {
-  margin: '3%'
+  marginTop: 30,
+  marginLeft: 40,
+  marginRight: 40,
+  paddingBottom: 40,
+  paddingRight: 40,
+  paddingLeft: 40,
 };
 
 export const elementStyle = {
-  padding: '2%',
-  marginTop: '2%',
+  padding: 20,
+  marginTop: 30,
 };
 

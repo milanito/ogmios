@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Clear from 'material-ui-icons/Clear';
 import Flag from 'react-country-flag';
+import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { IconButton, ListItem } from 'material-ui';
+import { IconButton, ListItem, Divider } from 'material-ui';
 import { map, last, split } from 'lodash';
 
 import {
@@ -15,6 +16,14 @@ class ProjectCard extends Component {
   redirectToProject(id) {
     const { project } = this.props;
     this.props.history.push(`/project/${project._id}`);
+  }
+
+  renderLocale(locale, ks) {
+    return (
+      <Grid item key={locale.code}>
+        <Flag code={last(split(locale.code, '_'))} svg />
+      </Grid>
+    )
   }
 
   render() {
@@ -28,14 +37,27 @@ class ProjectCard extends Component {
               <Clear />
             </IconButton>
           } >
-            <div>
-              {map(project.locales, (locale, i) => <Flag key={i} code={last(split(locale.code, '_'))} />)}
-            </div>
-            <h3>{project.name}</h3>
-            <div>
-              <b>{project.keys.length || 0}</b>&nbsp;
-              <i>{t('PROJECTS.keysInProject')}</i>
-            </div>
+          <Grid container direction="column">
+            <Grid item xs>
+              <h2>{project.name}</h2>
+            </Grid>
+            <Divider />
+            <Grid item xs>
+              <Grid container direction="row">
+                {map(project.locales, locale => this.renderLocale(locale, project.keys))}
+              </Grid>
+            </Grid>
+            <Grid item xs>
+              <Grid container direction="row">
+                <Grid item>
+                  <b>{project.keys.length || 0}</b>
+                </Grid>
+                <Grid item>
+                  <i>{t('PROJECTS.keysInProject')}</i>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </ListItem>
     )
   }

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { createBrowserHistory } from 'history';
+
+import history from '../history';
 
 export const AUTH_USER = 'AUTH_USER';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -15,14 +16,13 @@ export const loginUser = (props) => {
     })
     .then(({ data }) => {
       localStorage.setItem('token', data.token);
-      const history = createBrowserHistory();
       dispatch({ type: AUTH_USER });
 
-      history.push('/');
+      history.push('/projects');
     })
-    .catch(({ data }) => dispatch({
+    .catch(({ response }) => dispatch({
       type: LOGIN_FAILURE,
-      payload: data.error
+      payload: response ? response.data : {}
     }));
   };
 };
@@ -31,5 +31,5 @@ export const logoutUser = () => {
   return (dispatch) => {
     localStorage.removeItem('token');
     dispatch({ type: LOGOUT });
-  }
-}
+  };
+};

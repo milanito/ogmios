@@ -5,6 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import { TextField, RaisedButton } from 'material-ui';
 
 import { loginUser } from '../actions/auth';
+import { loginButtonStyle } from '../styles/login';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
   <TextField hintText={label}
@@ -29,38 +30,42 @@ class LoginForm extends Component {
   render() {
     const { handleSubmit, t } = this.props;
     return (
-      <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-          <Field name="email" component={renderField} type="text"
-            label={t('LOGIN.placeholderEmail')} />
-          <br />
-          <Field name="password" component={renderField} type="password"
-            label={t('LOGIN.placeholderPassword')} />
-          <br />
-          <RaisedButton type="submit" label={t('LOGIN.validate')} />
-        </form>
-      </div>
+      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
+        <Field name="email" component={renderField} type="text"
+          label={t('LOGIN.placeholderEmail')} />
+        <br />
+        <Field name="password" component={renderField} type="password"
+          label={t('LOGIN.placeholderPassword')} />
+        <br />
+        <RaisedButton type="submit"
+          label={t('LOGIN.validate')} style={loginButtonStyle}/>
+      </form>
     )
   }
 }
 
 function validate(formProps) {
   const errors = {};
+  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-  if(!formProps.email) {
+  if (!formProps.email) {
     errors.email = 'Email is required'
   }
 
-  if(!formProps.password) {
+  if (!re.test(formProps.email)) {
+    errors.email = 'Email is invalid';
+  }
+
+  if (!formProps.password) {
     errors.password = 'Password is required'
   }
 
   return errors;
 }
 
-function mapStateToProps(state) {
-  return { errorMessage: state.auth.error  }
-}
+
+const mapStateToProps = (state) => ({
+});
 
 LoginForm = reduxForm({ form: 'login', validate })(LoginForm);
 
