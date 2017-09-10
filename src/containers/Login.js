@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
@@ -21,7 +22,7 @@ class Login extends Component {
             justify="center">
             <Grid item>
               <Paper style={loginPanelStyle}>
-                <h1>{t('LOGIN.title')}</h1>
+                <Typography type="title" gutterBottom>{t('LOGIN.title')}</Typography>
                 <LoginForm />
               </Paper>
             </Grid>

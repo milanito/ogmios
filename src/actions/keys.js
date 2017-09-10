@@ -26,19 +26,16 @@ export const projectKeysSaving = () => {
   };
 };
 
-export const fetchProjectKeys = (id) => {
+export const fetchProjectKeys = (token, id) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_KEYS });
-    const token = localStorage.getItem('token');
     return _fetchProjectKeys(token, id)
       .then(({ data }) => dispatch({ type: GET_KEYS, keys: data }))
       .catch(({ data }) => dispatch({ type: GET_KEYS_FAILURE, payload: data }));
   };
 };
 
-export const projectKeysAdd = (props, id) => {
-  const token = localStorage.getItem('token');
-
+export const projectKeysAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_KEYS });
     return axios
@@ -58,8 +55,7 @@ export const projectKeysAdd = (props, id) => {
   };
 };
 
-export const projectKeysRemove = (key, id) => {
-  const token = localStorage.getItem('token');
+export const projectKeysRemove = (token, key, id) => {
   return (dispatch) =>
     axios
     .delete(`http://localhost:3000/api/projects/${id}/keys`, {

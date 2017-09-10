@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+import AppBar from 'material-ui/AppBar';
+import Typography from 'material-ui/Typography';
+import Toolbar from 'material-ui/Toolbar';
 import AddIcon from 'material-ui-icons/Add';
+import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { IconButton, Dialog } from 'material-ui';
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 import CreateProjectForm from './CreateProjectForm';
+import { projectsSaving, projectsCreating } from '../actions/projects';
 import {
-  projectsSaving, projectsCreating
-} from '../actions/projects';
+  projectsToolbarTitleStyle, projectsCreateStyle
+} from '../styles/projects';
 
 
 class ProjectsToolBar extends Component {
@@ -22,30 +26,29 @@ class ProjectsToolBar extends Component {
 
   render() {
     const { t, creating, projects } = this.props;
-    const actions = [];
     return (
       <div>
-        <Toolbar>
-          <ToolbarGroup>
-            <ToolbarTitle text={t('PROJECTS.title')} />
-            <ToolbarSeparator />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ToolbarTitle text={t('PROJECTS.total')} />
-            <ToolbarTitle text={projects.length} />
-            <ToolbarSeparator />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <IconButton onClick={this.toggleCreate.bind(this, true)}><AddIcon /></IconButton>
-          </ToolbarGroup>
-        </Toolbar>
+        <AppBar position="static">
+          <Toolbar disableGutters>
+            <Typography type="title" color="inherit" style={projectsToolbarTitleStyle}>
+              {t('PROJECTS.title')}
+            </Typography>
+            <Typography type="subheading" color="inherit">
+              {t('PROJECTS.total')} {projects.length}
+            </Typography>
+            <IconButton color="contrast" onClick={this.toggleCreate.bind(this, true)}>
+              <AddIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
         <Dialog
-          title={t('PROJECTS.createNew')}
-          actions={actions}
-          modal={false}
+          style={projectsCreateStyle}
           open={creating || false}
           onRequestClose={this.toggleCreate.bind(this, false)}>
-          <CreateProjectForm />
+          <DialogTitle>{t('PROJECTS.createNew')}</DialogTitle>
+          <DialogContent>
+            <CreateProjectForm />
+          </DialogContent>
         </Dialog>
       </div>
     );

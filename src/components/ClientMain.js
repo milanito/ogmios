@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
@@ -8,7 +9,7 @@ import {
   Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle
 } from 'material-ui/Toolbar';
 import {
-  TextField, RaisedButton, List, Paper, Divider
+  TextField, List, Paper, Divider
 } from 'material-ui';
 
 import ProjectCard from '../components/ProjectCard';
@@ -59,7 +60,7 @@ class ClientMain extends Component {
               onChange={this.updateValue()}
               value={this.state.name}
               type="text" />
-            <RaisedButton
+            <Button raised
               onClick={this.updateName.bind(this)}
               label={t('CLIENT.validate')} />
           </ToolbarGroup>

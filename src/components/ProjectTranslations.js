@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Menu, { MenuItem } from 'material-ui/Menu';
 import ClearIcon from 'material-ui-icons/Clear';
 import VisibilityIcon from 'material-ui-icons/Visibility';
 import VisibilityOffIcon from 'material-ui-icons/VisibilityOff';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { SelectField, MenuItem, IconButton } from 'material-ui';
+import { IconButton } from 'material-ui';
 import { map, filter, isEqual, isEmpty } from 'lodash';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
@@ -75,23 +76,19 @@ class ProjectLocales extends Component {
             <ToolbarSeparator />
           </ToolbarGroup>
           <ToolbarGroup>
-            <SelectField
-              floatingLabelText={t('PROJECT.selectLocaleOne')}
-              value={this.state.localeOne}
+            <Menu
               onChange={this.handleChangeOne.bind(this)}>
               {map(locales, (locale, i) =>
-                <MenuItem key={i} value={locale.code} primaryText={locale.code} />)}
-            </SelectField>
+                <MenuItem key={i} value={locale.code} primaryText={locale.code} onClick={this.handleChangeOne.bind(this)} />)}
+            </Menu>
             <ToolbarSeparator />
-            <SelectField
-              floatingLabelText={t('PROJECT.selectLocaleTwo')}
-              value={this.state.localeTwo}
-              onChange={this.handleChangeTwo.bind(this)}>
+            <Menu
+              >
               {map(filter(locales, locale =>
                 !isEqual(locale.code, this.state.localeOne)),
                 (locale, i) =>
-                <MenuItem key={i} value={locale.code} primaryText={locale.code} />)}
-            </SelectField>
+                <MenuItem key={i} value={locale.code} primaryText={locale.code} onChange={this.handleChangeTwo.bind(this)} />)}
+            </Menu>
           </ToolbarGroup>
         </Toolbar>
       </div>

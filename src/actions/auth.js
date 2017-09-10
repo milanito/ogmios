@@ -10,15 +10,21 @@ export const loginUser = (props) => {
   const { email, password } = props;
 
   return (dispatch) => {
-    axios.post('http://localhost:3000/api/auth', {
+    return axios.post('http://localhost:3000/api/auth', {
       grant: 'user',
       email, password
     })
     .then(({ data }) => {
-      localStorage.setItem('token', data.token);
-      dispatch({ type: AUTH_USER });
-
-      history.push('/projects');
+      return axios
+        .get('http://localhost:3000/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${data.token}`
+          }
+        })
+        .then((resp) => {
+          dispatch({ type: AUTH_USER, token: data.token, role: resp.data.role });
+          history.push('/projects');
+        });
     })
     .catch(({ response }) => dispatch({
       type: LOGIN_FAILURE,
@@ -30,6 +36,7 @@ export const loginUser = (props) => {
 export const logoutUser = () => {
   return (dispatch) => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     dispatch({ type: LOGOUT });
   };
 };

@@ -26,19 +26,16 @@ export const projectLocalesSaving = () => {
   };
 };
 
-export const fetchProjectLocales = (id) => {
+export const fetchProjectLocales = (token, id) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_LOCALES });
-    const token = localStorage.getItem('token');
     return _fetchProjectLocales(token, id)
       .then(({ data }) => dispatch({ type: GET_LOCALES, locales: data }))
       .catch(({ data }) => dispatch({ type: GET_LOCALES_FAILURE, payload: data }));
   };
 };
 
-export const projectLocalesAdd = (props, id) => {
-  const token = localStorage.getItem('token');
-
+export const projectLocalesAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_LOCALES });
     return axios
@@ -56,8 +53,7 @@ export const projectLocalesAdd = (props, id) => {
   };
 };
 
-export const projectLocalesRemove = (locale, id) => {
-  const token = localStorage.getItem('token');
+export const projectLocalesRemove = (token, locale, id) => {
   return (dispatch) =>
     axios
     .delete(`http://localhost:3000/api/projects/${id}/locales`, {
@@ -76,9 +72,7 @@ export const projectLocalesRemove = (locale, id) => {
     .catch(({ data }) => dispatch({ type: GET_LOCALES_FAILURE, payload: data }));
 };
 
-export const projectLocalesUpdate = (locale, id, key, value) => {
-  const token = localStorage.getItem('token');
-
+export const projectLocalesUpdate = (token, locale, id, key, value) => {
   return (dispatch) => {
     dispatch({ type: SAVING_LOCALES });
     const keys = {};
@@ -101,9 +95,7 @@ export const projectLocalesUpdate = (locale, id, key, value) => {
   };
 };
 
-export const projectLocalesMultipleUpdate = (locales, id) => {
-  const token = localStorage.getItem('token');
-
+export const projectLocalesMultipleUpdate = (token, locales, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_LOCALES });
     return axios

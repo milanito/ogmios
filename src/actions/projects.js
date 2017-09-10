@@ -26,19 +26,16 @@ export const projectsSaving = () => {
   };
 };
 
-export const fetchProjects = () => {
+export const fetchProjects = (token) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_PROJECTS });
-    const token = localStorage.getItem('token');
     return _fetchProjects(token)
       .then(({ data }) => dispatch({ type: GET_PROJECTS, projects: data }))
       .catch(({ data }) => dispatch({ type: GET_PROJECTS_FAILURE, payload: data }));
   };
 };
 
-export const projectsAdd = (props) => {
-  const token = localStorage.getItem('token');
-
+export const projectsAdd = (token, props) => {
   return (dispatch) => {
     dispatch({ type: CREATING_PROJECTS });
     return axios
@@ -56,8 +53,7 @@ export const projectsAdd = (props) => {
   };
 };
 
-export const projectsRemove = (id) => {
-  const token = localStorage.getItem('token');
+export const projectsRemove = (token, id) => {
   return (dispatch) =>
     axios
     .delete(`http://localhost:3000/api/projects/${id}`, {

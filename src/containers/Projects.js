@@ -11,7 +11,7 @@ import { listStyle, elementStyle } from '../styles/lists';
 
 class Projects extends Component {
   componentDidMount() {
-    this.props.fetchProjects();
+    this.props.fetchProjects(this.props.token);
   }
 
   render() {
@@ -47,7 +47,8 @@ class Projects extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  projects: state.projects.list
+  projects: state.projects.list,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

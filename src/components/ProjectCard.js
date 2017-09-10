@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import Clear from 'material-ui-icons/Clear';
 import Flag from 'react-country-flag';
+import Clear from 'material-ui-icons/Clear';
 import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+import Divider from 'material-ui/Divider';
+import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { IconButton, ListItem, Divider } from 'material-ui';
 import { map, last, split } from 'lodash';
 
-import {
-  projectsRemove
-} from '../actions/projects';
+import { projectsRemove } from '../actions/projects';
+import { projectCardStyle } from '../styles/project';
 
 class ProjectCard extends Component {
   redirectToProject(id) {
@@ -27,19 +29,13 @@ class ProjectCard extends Component {
   }
 
   render() {
-    const { project, projectsRemove, t } = this.props;
+    const { project, projectsRemove, t, token } = this.props;
     return (
-        <ListItem
-          onClick={this.redirectToProject.bind(this, project._id)}
-          rightIconButton={
-            <IconButton
-              onClick={projectsRemove.bind(this, project._id)}>
-              <Clear />
-            </IconButton>
-          } >
+        <ListItem button
+          onClick={this.redirectToProject.bind(this, project._id)} >
           <Grid container direction="column">
             <Grid item xs>
-              <h2>{project.name}</h2>
+              <Typography type="title">{project.name}</Typography>
             </Grid>
             <Divider />
             <Grid item xs>
@@ -50,20 +46,27 @@ class ProjectCard extends Component {
             <Grid item xs>
               <Grid container direction="row">
                 <Grid item>
-                  <b>{project.keys.length || 0}</b>
+                  <Typography type="body1">{project.keys.length || 0}</Typography>
                 </Grid>
                 <Grid item>
-                  <i>{t('PROJECTS.keysInProject')}</i>
+                  <Typography type="body2">{t('PROJECTS.keysInProject')}</Typography>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
+          <ListItemSecondaryAction>
+            <IconButton
+              onClick={projectsRemove.bind(this, token, project._id)}>
+              <Clear />
+            </IconButton>
+          </ListItemSecondaryAction>
         </ListItem>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

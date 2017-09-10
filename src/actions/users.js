@@ -27,19 +27,16 @@ export const projectUsersSaving = () => {
   };
 };
 
-export const fetchProjectUsers = (id) => {
+export const fetchProjectUsers = (token, id) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_USERS });
-    const token = localStorage.getItem('token');
     return _fetchProjectUsers(token, id)
       .then(({ data }) => dispatch({ type: GET_USERS, users: data }))
       .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
   };
 };
 
-export const projectUsersAdd = (props, id) => {
-  const token = localStorage.getItem('token');
-
+export const projectUsersAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios
@@ -57,8 +54,7 @@ export const projectUsersAdd = (props, id) => {
   };
 };
 
-export const projectUsersRemove = (user, id) => {
-  const token = localStorage.getItem('token');
+export const projectUsersRemove = (token, user, id) => {
   return (dispatch) =>
     axios
     .delete(`http://localhost:3000/api/projects/${id}/users`, {
@@ -77,9 +73,7 @@ export const projectUsersRemove = (user, id) => {
     .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
 };
 
-export const projectUsersUpdate = (user, id, key, value) => {
-  const token = localStorage.getItem('token');
-
+export const projectUsersUpdate = (token, user, id, key, value) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios

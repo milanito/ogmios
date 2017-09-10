@@ -16,13 +16,13 @@ export default function (ComposedComponent) {
 
     componentWillUpdate(nextProps) {
       if (nextProps.authenticated) {
-        history.push('/');
+        history.push('/projects');
       }
     }
 
     render() {
       if (this.props.authenticated) {
-        return <Redirect push to="/" />;
+        return <Redirect push to="/projects" />;
       } else {
         return <ComposedComponent {...this.props} />
       }

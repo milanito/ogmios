@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
+import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { TextField } from 'material-ui';
+import { isEmpty } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
-import { TextField, RaisedButton } from 'material-ui';
 
 import { projectsAdd } from '../actions/projects';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
-  <TextField hintText={label}
-    floatingLabelText={label}
+  <TextField label={label}
     type={type}
-    errorText={touched && error}
+    error={touched && !isEmpty(error)}
+    helperText={touched && error}
     {...input}
     />
 );
@@ -23,20 +26,23 @@ class CreateProjectForm extends Component {
   }
 
   handleFormSubmit(props) {
-    this.props.projectsAdd(props);
+    this.props.projectsAdd(this.props.token, props);
   }
 
   render() {
     const { handleSubmit, t } = this.props;
     return (
-      <div>
         <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-          <Field name="name" component={renderField} type="text"
-            label={t('PROJECTS.placeholderName')} />
-          <br />
-          <RaisedButton type="submit" label={t('PROJECT.validate')} />
+          <Grid container direction="column" align="center">
+            <Grid item xs>
+              <Field name="name" component={renderField} type="text"
+                label={t('PROJECTS.placeholderName')} />
+            </Grid>
+            <Grid item xs>
+              <Button raised type="submit">{t('PROJECT.validate')}</Button>
+            </Grid>
+          </Grid>
         </form>
-      </div>
     )
   }
 }
@@ -56,6 +62,7 @@ function onSubmitSuccess(result, dispatch) {
 }
 
 const mapStateToProps = (state) => ({
+  token: state.auth.token
 });
 
 CreateProjectForm = reduxForm({ form: 'createProject', validate, onSubmitSuccess })(CreateProjectForm);

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { TextField } from 'material-ui';
+import { isEmpty } from 'lodash';
 import { reduxForm, Field } from 'redux-form';
-import { TextField, RaisedButton } from 'material-ui';
 
 import { loginUser } from '../actions/auth';
 import { loginButtonStyle } from '../styles/login';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
-  <TextField hintText={label}
-    floatingLabelText={label}
+  <TextField label={label}
     type={type}
-    errorText={touched && error}
+    error={touched && !isEmpty(error)}
+    helperText={touched && error}
     {...input}
     />
 );
@@ -37,8 +39,9 @@ class LoginForm extends Component {
         <Field name="password" component={renderField} type="password"
           label={t('LOGIN.placeholderPassword')} />
         <br />
-        <RaisedButton type="submit"
-          label={t('LOGIN.validate')} style={loginButtonStyle}/>
+        <Button type="submit" raised style={loginButtonStyle}>
+          {t('LOGIN.validate')}
+        </Button>
       </form>
     )
   }

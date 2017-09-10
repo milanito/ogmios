@@ -10,17 +10,20 @@ import Login from './containers/Login.js';
 import NotFound from './containers/NotFound';
 import Projects from './containers/Projects.js';
 import Project from './containers/Project.js';
+import { switchStyle } from './styles/main'
 
 export default (
   <div>
     <Header />
-    <Switch>
-      <Route exact path="/login" component={requireNotAuth(Login)} />
-      <Route exact path="/projects" component={requireAuth(Projects)} />
-      <Route exact path="/project/:projectid" component={requireAuth(Project)} />
-      <Route exact path="/clients" component={requireAuth(Clients)} />
-      <Route exact path="/client/:clientid" component={requireAuth(Client)} />
-      <Route component={NotFound}/>
-    </Switch>
+    <div style={switchStyle}>
+      <Switch>
+        <Route exact path="/login" component={requireNotAuth(Login)} />
+        <Route exact path="/projects" component={requireAuth(Projects)} />
+        <Route exact path="/project/:projectid" component={requireAuth(Project)} />
+        <Route exact path="/clients" component={requireAuth(Clients)} />
+        <Route exact path="/client/:clientid" component={requireAuth(Client)} />
+        <Route component={requireAuth(NotFound)}/>
+      </Switch>
+    </div>
   </div>
 )

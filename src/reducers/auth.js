@@ -7,11 +7,11 @@ import {
 export default (state = {}, action) => {
   switch(action.type) {
     case AUTH_USER:
-      return { ...state, authenticated: true, error: {} };
+      return { ...state, authenticated: true, token: action.token, role: action.role, error: {} };
     case LOGIN_FAILURE:
       return { ...state, error: { login: action.payload } };
     case LOGOUT:
-      return { ...state, authenticated: false, error: {} };
+      return { ...state, authenticated: false, token: null, role: null, error: {} };
     default:
       return state;
   }

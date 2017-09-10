@@ -13,9 +13,7 @@ const _fetchProject = (token, id) =>
     }
   })
 
-export const fetchProject = (id) => {
-  const token = localStorage.getItem('token');
-
+export const fetchProject = (token, id) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_PROJECT });
     return _fetchProject(token, id)
@@ -24,9 +22,7 @@ export const fetchProject = (id) => {
   };
 };
 
-export const projectSave = (id, name) => {
-  const token = localStorage.getItem('token');
-
+export const projectSave = (token, id, name) => {
   return (dispatch) => {
     dispatch({ type: SAVING_PROJECT });
     return axios

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import AppBar from 'material-ui/AppBar';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { Card, LinearProgress } from 'material-ui';
-import { Tabs, Tab } from 'material-ui/Tabs';
+import { LinearProgress } from 'material-ui';
 
 import ProjectMain from '../components/ProjectMain';
 import ProjectLocales from '../components/ProjectLocales';
@@ -14,32 +15,44 @@ import { fetchProjectKeys } from '../actions/keys';
 import { fetchProjectUsers } from '../actions/users';
 
 class Project extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { value: 0 };
+  }
+
   componentDidMount() {
-    this.props.fetchProject(this.props.match.params.projectid);
-    this.props.fetchProjectLocales(this.props.match.params.projectid);
-    this.props.fetchProjectKeys(this.props.match.params.projectid);
-    this.props.fetchProjectUsers(this.props.match.params.projectid);
+    this.props.fetchProject(this.props.token, this.props.match.params.projectid);
+    this.props.fetchProjectLocales(this.props.token, this.props.match.params.projectid);
+    this.props.fetchProjectKeys(this.props.token, this.props.match.params.projectid);
+    this.props.fetchProjectUsers(this.props.token, this.props.match.params.projectid);
+  }
+
+  handleChange() {
+    return (event, value) => {
+      this.setState({ value });
+    };
   }
 
   renderProject() {
     const { t } = this.props;
+    const { value } = this.state;
+
     return (
-      <Card>
-        <Tabs>
-          <Tab label={t('PROJECT.tabDetails')}>
-            <ProjectMain />
-          </Tab>
-          <Tab label={t('PROJECT.tabLocales')}>
-            <ProjectLocales />
-          </Tab>
-          <Tab label={t('PROJECT.tabKeys')}>
-            <ProjectKeys />
-          </Tab>
-          <Tab label={t('PROJECT.tabTranslations')}>
-            <ProjectTranslations />
-          </Tab>
-        </Tabs>
-      </Card>
+      <div>
+        <AppBar position="static">
+          <Tabs value={value} onChange={this.handleChange()}>
+            <Tab label={t('PROJECT.tabDetails')} />
+            <Tab label={t('PROJECT.tabLocales')} />
+            <Tab label={t('PROJECT.tabKeys')} />
+            <Tab label={t('PROJECT.tabTranslations')} />
+          </Tabs>
+        </AppBar>
+        {value === 0 && <ProjectMain />}
+        {value === 1 && <ProjectLocales />}
+        {value === 2 && <ProjectKeys />}
+        {value === 3 && <ProjectTranslations />}
+      </div>
     );
   }
 
@@ -54,7 +67,8 @@ class Project extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  fetching: state.project.fetching
+  fetching: state.project.fetching,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

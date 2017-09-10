@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Autosuggest from 'react-autosuggest';
 import countryLanguage from 'country-language';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
@@ -8,71 +9,48 @@ import { findIndex, map, replace, isEqual, filter } from 'lodash';
 
 import { projectLocalesAdd } from '../actions/locales';
 
-const renderField = ({ input, type, label, meta: { touched, error }, locales, onACSubmit }) => (
-  <AutoComplete hintText={label}
-    floatingLabelText={label}
-    dataSource={filter(map(countryLanguage.getLocales(),
-      locale => replace(locale, /-/g, '_')),
-      (lcl) => isEqual(findIndex(locales, locale => isEqual(locale.code, lcl)), -1))}
-    type={type}
-    onNewRequest={onACSubmit}
-    errorText={touched && error}
-    {...input}
-    />
-);
+const getSuggestionValue = suggestion => replace(suggestion, /-/g, '_');
 
 class CreateProjectLocaleForm extends Component {
   constructor(props) {
     super(props);
 
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.state = { locale: '' };
   }
 
   handleFormSubmit(props) {
     this.props.projectLocalesAdd(props, this.props.project._id);
   }
 
-  render() {
-    const { handleSubmit, t, locales } = this.props;
+  renderSuggestion(suggestion) {
     return (
       <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-          <Field name="locale" component={renderField} type="text" locales={locales}
-            label={t('PROJECT.placeholderNewLocale')}
-            onACSubmit={handleSubmit(this.handleFormSubmit)} />
-        </form>
+          {replace(suggestion, /-/g, '_')}
       </div>
+    );
+  }
+
+  render() {
+    const { handleSubmit, t, locales } = this.props;
+    const inputProps = {
+      placeholder: t('PROJECT.placeholderNewLocale'),
+      value: this.state.locale,
+      onChange: this.onChange
+    };
+    return (
+      <Autosuggest
+        suggestions={countryLanguage.getLocales()}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={this.renderSuggestion.bind(this)}
+        inputProps={inputProps} />
     )
   }
-}
-
-function validate(formProps, props) {
-  const errors = {};
-
-  if(!formProps.locale) {
-    errors.locale = 'locale is required'
-  }
-
-  const idx = findIndex(props.locales,
-    ({ code }) => isEqual(code, formProps.locale));
-
-  if (idx > -1) {
-    errors.locale = 'locale already exists'
-  }
-
-  return errors;
-}
-
-function onSubmitSuccess(result, dispatch) {
-  dispatch(reset('createProjectLocale'));
 }
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
   locales: state.locales.list
 });
-
-CreateProjectLocaleForm = reduxForm({ form: 'createProjectLocale', validate, onSubmitSuccess })(CreateProjectLocaleForm);
 
 const mapDispatchToProps = {
   projectLocalesAdd

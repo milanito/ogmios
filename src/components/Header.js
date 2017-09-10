@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
 import LoopIcon from 'material-ui-icons/Loop';
 import ReorderIcon from 'material-ui-icons/Reorder';
 import BookIcon from 'material-ui-icons/Book';
@@ -9,17 +15,20 @@ import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
-import { AppBar, IconButton, MenuItem, Drawer } from 'material-ui';
 
+import history from '../history';
 import { logoutUser } from '../actions/auth';
 import { toggleDrawer } from '../actions/drawer';
-
-
+import { drawerListStyle } from '../styles/drawer';
 
 class Header extends Component {
   fullLogout() {
     this.props.toggleDrawer(false);
     this.props.logoutUser();
+  }
+
+  navigate(url) {
+    history.push(url);
   }
 
   renderRightIcon() {
@@ -35,30 +44,39 @@ class Header extends Component {
     const { authenticated, t, isOpen, toggleDrawer } = this.props;
     return (
       <div>
-        <AppBar title={t('NAVBAR.title')}
-          iconElementRight={this.renderRightIcon()}
-          iconElementLeft={
+        <AppBar color="inherit">
+          <Toolbar disableGutters>
             <IconButton onClick={toggleDrawer.bind(null, true)}>
               <ReorderIcon />
             </IconButton>
-          }/>
-        <Drawer open={isOpen && authenticated}>
-          <IconButton onClick={toggleDrawer.bind(null, false)}><ClearIcon /></IconButton>
-          <MenuItem primaryText={t('NAVBAR.projects')}
-            leftIcon={<BookIcon />}
-            onClick={toggleDrawer.bind(null, false)}
-            containerElement={<Link to="/projects"/>} />
-          <MenuItem primaryText={t('NAVBAR.clients')}
-            leftIcon={<SettingsRemoteIcon />}
-            onClick={toggleDrawer.bind(null, false)}
-            containerElement={<Link to="/clients"/>} />
-          <MenuItem primaryText={t('NAVBAR.settings')}
-            leftIcon={<SettingsIcon />}
-            onClick={toggleDrawer.bind(null, false)}
-            containerElement={<Link to="/settings"/>} />
-          <MenuItem primaryText={t('NAVBAR.logout')}
-            leftIcon={<CancelIcon />}
-            onClick={this.fullLogout.bind(this)} />
+            <Typography type="title">
+              {t('NAVBAR.title')}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer open={isOpen && authenticated}
+          style={drawerListStyle}
+          onRequestClose={toggleDrawer.bind(null, false)}
+          onClick={toggleDrawer.bind(null, false)}>
+          <List
+            subheader={<ListSubheader>{t('NAVBAR.drawerTitle')}</ListSubheader>}>
+            <ListItem button onClick={this.navigate.bind(this, '/projects')}>
+              <ListItemIcon><BookIcon /></ListItemIcon>
+              <ListItemText primary={t('NAVBAR.projects')} />
+            </ListItem>
+            <ListItem button onClick={this.navigate.bind(this, '/clients')}>
+              <ListItemIcon><SettingsRemoteIcon /></ListItemIcon>
+              <ListItemText primary={t('NAVBAR.clients')} />
+            </ListItem>
+            <ListItem button onClick={this.navigate.bind(this, '/settings')}>
+              <ListItemIcon><SettingsIcon /></ListItemIcon>
+              <ListItemText primary={t('NAVBAR.settings')} />
+            </ListItem>
+            <ListItem button onClick={this.fullLogout.bind(this)}>
+              <ListItemIcon><CancelIcon /></ListItemIcon>
+              <ListItemText primary={t('NAVBAR.logout')} />
+            </ListItem>
+          </List>
         </Drawer>
       </div>
     )

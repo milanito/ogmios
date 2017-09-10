@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import Button from 'material-ui/Button';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { SelectField, MenuItem, RaisedButton } from 'material-ui';
 import { map, set, has, isEqual, get, nth, isUndefined } from 'lodash';
 
 import { fetchExportTypes, exportProject } from '../actions/export';
@@ -62,19 +63,15 @@ class DownloadProject extends Component {
     const { t, types, locales } = this.props;
     return (
       <div>
-        <SelectField
-          floatingLabelText={t('PROJECT.selectDownload')}
-          value={this.state.type}
+        <Menu
           onChange={this.handleChange('type')}>
           {map(types, (type, i) => <MenuItem key={i} value={i} primaryText={type} />)}
-        </SelectField>
-        <SelectField
-          floatingLabelText={t('PROJECT.selectLocale')}
-          value={this.state.locale}
+        </Menu>
+        <Menu
           onChange={this.handleChange('locale')}>
           {map(locales, (locale, i) => <MenuItem key={i} value={i} primaryText={locale.code} />)}
-        </SelectField>
-        <RaisedButton onClick={this.handleSubmit.bind(this)}label={t('PROJECT.validate')} />
+        </Menu>
+        <Button raised onClick={this.handleSubmit.bind(this)}label={t('PROJECT.validate')} />
       </div>
     );
   }
