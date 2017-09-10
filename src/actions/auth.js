@@ -22,7 +22,12 @@ export const loginUser = (props) => {
           }
         })
         .then((resp) => {
-          dispatch({ type: AUTH_USER, token: data.token, role: resp.data.role });
+          dispatch({
+            type: AUTH_USER,
+            token: data.token,
+            email: resp.data.email,
+            role: resp.data.role
+          });
           history.push('/projects');
         });
     })
@@ -35,8 +40,6 @@ export const loginUser = (props) => {
 
 export const logoutUser = () => {
   return (dispatch) => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
     dispatch({ type: LOGOUT });
   };
 };

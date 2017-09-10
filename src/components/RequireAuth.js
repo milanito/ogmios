@@ -9,19 +9,19 @@ import history from '../history';
 export default function (ComposedComponent) {
   class Authentication extends Component {
     componentWillMount() {
-      if (!this.props.authenticated) {
+      if (this.props.rehydrated && !this.props.authenticated) {
         history.push('/login');
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
+      if (this.props.rehydrated && !nextProps.authenticated) {
         history.push('/login');
       }
     }
 
     render() {
-      if (!this.props.authenticated) {
+      if (this.props.rehydrated && !this.props.authenticated) {
         return <Redirect push to="/login" />;
       } else {
         return <ComposedComponent {...this.props} />
@@ -31,9 +31,10 @@ export default function (ComposedComponent) {
 
   Authentication.propTypes = { authenticated: PropTypes.bool };
 
-  function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
-  }
+  const mapStateToProps = state => ({
+    authenticated: state.auth.authenticated,
+    rehydrated: state.auth.rehydrated
+  });
 
   return withRouter(connect(mapStateToProps)(Authentication));
 }

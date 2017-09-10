@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import AppBar from 'material-ui/AppBar';
-import Typography from 'material-ui/Typography';
-import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
+import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import FileUploadIcon from 'material-ui-icons/FileUpload';
 import { TextField } from 'material-ui';
@@ -13,12 +14,12 @@ import { translate } from 'react-i18next';
 import { get, set, isEmpty, isUndefined } from 'lodash';
 
 import ProjectUsers from './ProjectUsers';
+import ProjectMainActions from './ProjectMainActions';
+import ProjectMainName from './ProjectMainName';
 import DownloadProject from './DownloadProject';
 import UploadProject from './UploadProject';
 import { projectSave } from '../actions/project';
-import {
-  projectsToolbarTitleStyle, projectsCreateStyle
-} from '../styles/projects';
+import { projectMainLeftBlock } from '../styles/project';
 
 class ProjectMain extends Component {
   constructor(props) {
@@ -50,47 +51,24 @@ class ProjectMain extends Component {
 
   render() {
     const { t } = this.props;
-    const { isDownloading, isUploading } = this.state;
-    const actions = [];
     return (
       <div>
-        <AppBar position="static">
-          <Toolbar disableGutters>
-            <Typography type="title" color="inherit" style={projectsToolbarTitleStyle}>
-              {t('PROJECT.title')}
-            </Typography>
-            <IconButton onClick={this.handleFile.bind(this, 'isDownloading', true)}><FileDownloadIcon /></IconButton>
-            <IconButton onClick={this.handleFile.bind(this, 'isUploading', true)}><FileUploadIcon /></IconButton>
-          </Toolbar>
-        </AppBar>
-        <Dialog
-          title={t('PROJECT.downloadFile')}
-          actions={actions}
-          modal={false}
-          open={isDownloading}
-          onRequestClose={this.handleFile.bind(this, 'isDownloading', false)}>
-          <DownloadProject />
-        </Dialog>
-        <Dialog
-          title={t('PROJECT.updloadFile')}
-          actions={actions}
-          modal={false}
-          open={isUploading}
-          onRequestClose={this.handleFile.bind(this, 'isUploading', false)}>
-          <UploadProject />
-        </Dialog>
-        <div>
-          <TextField
-            label={t('PROJECT.fieldName')}
-            onChange={this.updateValue()}
-            value={this.state.name}
-            type="text" />
-          <Button raised
-            onClick={this.updateName.bind(this)}>
-            {t('PROJECT.validate')}
-          </Button>
-        </div>
-        <ProjectUsers />
+        <Grid container direction="row">
+          <Grid item xs style={projectMainLeftBlock}>
+            <Grid container direction="column">
+              <Grid item xs>
+                <ProjectMainName />
+              </Grid>
+              <Divider />
+              <Grid item xs>
+                <ProjectMainActions />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <ProjectUsers />
+          </Grid>
+        </Grid>
       </div>
     );
   }

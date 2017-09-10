@@ -15,11 +15,13 @@ import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';
+import { isEqual } from 'lodash';
 
 import history from '../history';
 import { logoutUser } from '../actions/auth';
 import { toggleDrawer } from '../actions/drawer';
 import { drawerListStyle } from '../styles/drawer';
+import { appbarTitleStyle, emailStyle } from '../styles/main';
 
 class Header extends Component {
   fullLogout() {
@@ -41,7 +43,7 @@ class Header extends Component {
   }
 
   render() {
-    const { authenticated, t, isOpen, toggleDrawer } = this.props;
+    const { authenticated, t, isOpen, toggleDrawer, role, email } = this.props;
     return (
       <div>
         <AppBar color="inherit">
@@ -49,8 +51,11 @@ class Header extends Component {
             <IconButton onClick={toggleDrawer.bind(null, true)}>
               <ReorderIcon />
             </IconButton>
-            <Typography type="title">
+            <Typography type="title" style={appbarTitleStyle}>
               {t('NAVBAR.title')}
+            </Typography>
+            <Typography type="subheading" style={emailStyle}>
+              {email}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -68,10 +73,16 @@ class Header extends Component {
               <ListItemIcon><SettingsRemoteIcon /></ListItemIcon>
               <ListItemText primary={t('NAVBAR.clients')} />
             </ListItem>
-            <ListItem button onClick={this.navigate.bind(this, '/settings')}>
-              <ListItemIcon><SettingsIcon /></ListItemIcon>
-              <ListItemText primary={t('NAVBAR.settings')} />
-            </ListItem>
+            {(() => {
+              if (isEqual(role, 'admin')) {
+                return (
+                  <ListItem button onClick={this.navigate.bind(this, '/users')}>
+                    <ListItemIcon><SettingsIcon /></ListItemIcon>
+                    <ListItemText primary={t('NAVBAR.users')} />
+                  </ListItem>
+                )
+              }
+            })()}
             <ListItem button onClick={this.fullLogout.bind(this)}>
               <ListItemIcon><CancelIcon /></ListItemIcon>
               <ListItemText primary={t('NAVBAR.logout')} />
@@ -85,6 +96,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   authenticated: state.auth.authenticated,
+  role: state.auth.role,
+  email: state.auth.email,
   isOpen: state.drawer.isOpen,
   creatingProject: state.projects.creating,
   fetchingProjects: state.projects.fetching,

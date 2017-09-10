@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import AppBar from 'material-ui/AppBar';
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { LinearProgress } from 'material-ui';
@@ -13,6 +16,7 @@ import { fetchProject } from '../actions/project';
 import { fetchProjectLocales } from '../actions/locales';
 import { fetchProjectKeys } from '../actions/keys';
 import { fetchProjectUsers } from '../actions/users';
+import { projectToolbarTitleStyle } from '../styles/project';
 
 class Project extends Component {
   constructor(props) {
@@ -35,23 +39,34 @@ class Project extends Component {
   }
 
   renderProject() {
-    const { t } = this.props;
+    const { t, project } = this.props;
     const { value } = this.state;
 
     return (
       <div>
         <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange()}>
-            <Tab label={t('PROJECT.tabDetails')} />
-            <Tab label={t('PROJECT.tabLocales')} />
-            <Tab label={t('PROJECT.tabKeys')} />
-            <Tab label={t('PROJECT.tabTranslations')} />
-          </Tabs>
+          <Grid container direction="row">
+            <Grid item xs>
+              <Typography type="title" color="inherit" style={projectToolbarTitleStyle}>
+                {project.name}
+              </Typography>
+            </Grid>
+            <Grid item xs>
+              <Tabs value={value} onChange={this.handleChange()}>
+                <Tab label={t('PROJECT.tabDetails')} />
+                <Tab label={t('PROJECT.tabLocales')} />
+                <Tab label={t('PROJECT.tabKeys')} />
+                <Tab label={t('PROJECT.tabTranslations')} />
+              </Tabs>
+            </Grid>
+          </Grid>
         </AppBar>
-        {value === 0 && <ProjectMain />}
-        {value === 1 && <ProjectLocales />}
-        {value === 2 && <ProjectKeys />}
-        {value === 3 && <ProjectTranslations />}
+        <Paper>
+          {value === 0 && <ProjectMain />}
+          {value === 1 && <ProjectLocales />}
+          {value === 2 && <ProjectKeys />}
+          {value === 3 && <ProjectTranslations />}
+        </Paper>
       </div>
     );
   }

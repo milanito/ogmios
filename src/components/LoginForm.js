@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
+import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { TextField } from 'material-ui';
@@ -33,15 +34,21 @@ class LoginForm extends Component {
     const { handleSubmit, t } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-        <Field name="email" component={renderField} type="text"
-          label={t('LOGIN.placeholderEmail')} />
-        <br />
-        <Field name="password" component={renderField} type="password"
-          label={t('LOGIN.placeholderPassword')} />
-        <br />
-        <Button type="submit" raised style={loginButtonStyle}>
-          {t('LOGIN.validate')}
-        </Button>
+        <Grid container direction="column" align="center">
+          <Grid item xs>
+            <Field name="email" component={renderField} type="text"
+              label={t('LOGIN.placeholderEmail')} />
+          </Grid>
+          <Grid item xs>
+            <Field name="password" component={renderField} type="password"
+              label={t('LOGIN.placeholderPassword')} />
+          </Grid>
+          <Grid item xs>
+            <Button type="submit" raised style={loginButtonStyle}>
+              {t('LOGIN.validate')}
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     )
   }

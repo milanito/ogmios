@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import AccountCircleIcon from 'material-ui-icons/AccountCircle';
+import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map } from 'lodash';
+import { map, isEqual } from 'lodash';
 import { Chip, Avatar } from 'material-ui';
 
 class ProjectUsers extends Component {
@@ -12,28 +14,32 @@ class ProjectUsers extends Component {
   renderUser(user, i) {
     return (
       <Chip key={i}
-        onRequestDelete={this.handleDelete.bind(this, user)}>
-        <Avatar icon={<AccountCircleIcon />} />
-        <label>{user.email}&nbsp;</label>
-        <span>{user.role}</span>
-      </Chip>
+        onRequestDelete={this.handleDelete.bind(this, user)}
+        avatar={<Avatar><AccountCircleIcon /></Avatar>}
+        label={user.email}/>
     )
   }
 
   render() {
-    const { users } = this.props;
+    const { users, t } = this.props;
     return (
-      <div>
-        <h1>USERS</h1>
-        {map(users, (user, i) => this.renderUser(user, i))}
-      </div>
+      <Grid container direction="column">
+        <Grid item xs>
+          <Typography type="subheading">
+            {t('PROJECT.usersList')}
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          {map(users, (user, i) => this.renderUser(user, i))}
+        </Grid>
+      </Grid>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  users: state.users.list
+  users: state.users.list,
 });
 
 const mapDispatchToProps = {
