@@ -27,7 +27,9 @@
     "redux": "^3.7.2",
     "redux-form": "^7.0.3",
     "redux-persist": "^4.9.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "xml2js": "^0.4.19",
+    "yamljs": "^0.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

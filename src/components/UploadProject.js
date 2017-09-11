@@ -59,8 +59,9 @@ class UploadProject extends Component {
           case 'csv':
             return this.setState({ json: jsonToFlatJSON(csvToJSON(fileString)) });
           case 'xml':
-            return this.setState({ json: jsonToFlatJSON(xmlToJSON(fileString)) });
-          case 'apple':
+            return xmlToJSON(fileString)
+            .then(json => this.setState({ json: jsonToFlatJSON(json) }));
+          case 'txt':
             return this.setState({ json: jsonToFlatJSON(appleToJSON(fileString)) });
           default:
             return;
