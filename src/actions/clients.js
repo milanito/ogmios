@@ -3,9 +3,8 @@ import axios from 'axios';
 export const GET_CLIENTS = 'GET_CLIENTS';
 export const GET_CLIENTS_FAILURE = 'GET_CLIENTS_FAILURE';
 
-export const fetchClients = () => {
+export const fetchClients = (token) => {
   return (dispatch) => {
-    const token = localStorage.getItem('token');
     return axios
       .get('http://localhost:3000/api/clients', {
         headers: {

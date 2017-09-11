@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import AddIcon from 'material-ui-icons/Add';
 import AppBar from 'material-ui/AppBar';
 import Typography from 'material-ui/Typography';
 import Toolbar from 'material-ui/Toolbar';
-import AddIcon from 'material-ui-icons/Add';
-import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
+import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 

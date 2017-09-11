@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
+import List from 'material-ui/List';
+import Card from 'material-ui/Card';
+import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { translate } from 'react-i18next';
-import { List, Card, Paper, LinearProgress } from 'material-ui';
+import { LinearProgress } from 'material-ui/Progress';
 
 import ProjectCard from '../components/ProjectCard';
 import ProjectsToolBar from '../components/ProjectsToolBar';
