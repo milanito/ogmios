@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const FETCHING_PROJECTS = 'FETCHING_PROJECTS';
 export const GET_PROJECTS = 'GET_PROJECTS';
@@ -39,7 +39,7 @@ export const projectsAdd = (token, props) => {
   return (dispatch) => {
     dispatch({ type: CREATING_PROJECTS });
     return axios
-      .post('http://localhost:3000/api/projects', props, {
+      .post('/api/projects', props, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ export const projectsAdd = (token, props) => {
 export const projectsRemove = (token, id) => {
   return (dispatch) =>
     axios
-    .delete(`http://localhost:3000/api/projects/${id}`, {
+    .delete(`/api/projects/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

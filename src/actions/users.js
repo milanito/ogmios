@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 import { set } from 'lodash';
 
 export const FETCHING_USERS = 'FETCHING_USERS';
@@ -9,7 +9,7 @@ export const SAVING_USERS = 'SAVING_USERS';
 
 const _fetchProjectUsers = (token, id) =>
   axios
-  .get(`http://localhost:3000/api/projects/${id}/users`, {
+  .get(`/api/projects/${id}/users`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -40,7 +40,7 @@ export const projectUsersAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios
-      .post(`http://localhost:3000/api/projects/${id}/users`, props, {
+      .post(`/api/projects/${id}/users`, props, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ export const projectUsersAdd = (token, props, id) => {
 export const projectUsersRemove = (token, user, id) => {
   return (dispatch) =>
     axios
-    .delete(`http://localhost:3000/api/projects/${id}/users`, {
+    .delete(`/api/projects/${id}/users`, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -77,7 +77,7 @@ export const projectUsersUpdate = (token, user, id, key, value) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios
-      .patch(`http://localhost:3000/api/projects/${id}/users`, {
+      .patch(`/api/projects/${id}/users`, {
         user,
         keys: set({}, key, value)
       },{

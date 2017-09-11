@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const FETCHING_LOCALES = 'FETCHING_LOCALES';
 export const GET_LOCALES = 'GET_LOCALES';
@@ -8,7 +8,7 @@ export const SAVING_LOCALES = 'SAVING_LOCALES';
 
 const _fetchProjectLocales = (token, id) =>
   axios
-  .get(`http://localhost:3000/api/projects/${id}/locales`, {
+  .get(`/api/projects/${id}/locales`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -39,7 +39,7 @@ export const projectLocalesAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_LOCALES });
     return axios
-      .post(`http://localhost:3000/api/projects/${id}/locales`, props, {
+      .post(`/api/projects/${id}/locales`, props, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ export const projectLocalesAdd = (token, props, id) => {
 export const projectLocalesRemove = (token, locale, id) => {
   return (dispatch) =>
     axios
-    .delete(`http://localhost:3000/api/projects/${id}/locales`, {
+    .delete(`/api/projects/${id}/locales`, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -78,7 +78,7 @@ export const projectLocalesUpdate = (token, locale, id, key, value) => {
     const keys = {};
     keys[key] = value;
     return axios
-      .patch(`http://localhost:3000/api/projects/${id}/locales`, {
+      .patch(`/api/projects/${id}/locales`, {
         locale,
         keys
       },{
@@ -99,7 +99,7 @@ export const projectLocalesMultipleUpdate = (token, locales, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_LOCALES });
     return axios
-      .patch(`http://localhost:3000/api/projects/${id}/locales/multiple`, {
+      .patch(`/api/projects/${id}/locales/multiple`, {
         locales
       },{
         headers: {

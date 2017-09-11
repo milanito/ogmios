@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const FETCHING_EXPORT_TYPES = 'FETCHING_EXPORT_TYPES';
 export const FETCHING_EXPORT_PROJECT = 'FETCHING_EXPORT_PROJECT';
@@ -13,7 +13,7 @@ export const fetchExportTypes = (token) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_EXPORT_TYPES });
     return axios
-    .get(`http://localhost:3000/api/export/types`, {
+    .get(`/api/export/types`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -27,7 +27,7 @@ export const exportProject = (token, id, locale, type) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_EXPORT_PROJECT });
     return axios
-    .get(`http://localhost:3000/api/export/project/${id}/locale/${locale}/type/${type}`, {
+    .get(`/api/export/project/${id}/locale/${locale}/type/${type}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

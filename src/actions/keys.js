@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const FETCHING_KEYS = 'FETCHING_KEYS';
 export const GET_KEYS = 'GET_KEYS';
@@ -7,7 +7,7 @@ export const SAVING_KEYS = 'SAVING_KEYS';
 
 const _fetchProjectKeys = (token, id) =>
   axios
-  .get(`http://localhost:3000/api/projects/${id}/keys`, {
+  .get(`/api/projects/${id}/keys`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -26,7 +26,7 @@ export const projectKeysAdd = (token, props, id) => {
   return (dispatch) => {
     dispatch({ type: SAVING_KEYS });
     return axios
-      .post(`http://localhost:3000/api/projects/${id}/keys`, {
+      .post(`/api/projects/${id}/keys`, {
         keys: [ props.key ]
       }, {
         headers: {
@@ -45,7 +45,7 @@ export const projectKeysAdd = (token, props, id) => {
 export const projectKeysRemove = (token, keys, id) => {
   return (dispatch) =>
     axios
-    .delete(`http://localhost:3000/api/projects/${id}/keys`, {
+    .delete(`/api/projects/${id}/keys`, {
       headers: {
         Authorization: `Bearer ${token}`
       },

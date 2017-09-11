@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import axios from '../api';
 import history from '../history';
 
 export const AUTH_USER = 'AUTH_USER';
@@ -10,13 +9,13 @@ export const loginUser = (props) => {
   const { email, password } = props;
 
   return (dispatch) => {
-    return axios.post('http://localhost:3000/api/auth', {
+    return axios.post('api/auth', {
       grant: 'user',
       email, password
     })
     .then(({ data }) => {
       return axios
-        .get('http://localhost:3000/api/users/me', {
+        .get('/api/users/me', {
           headers: {
             Authorization: `Bearer ${data.token}`
           }

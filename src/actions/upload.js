@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const CLEAR_IMPORTS = 'CLEAR_IMPORTS';
 export const IMPORTING_KEYS = 'IMPORTING_KEYS';
@@ -20,7 +20,7 @@ export const uploadKeys = (token, keys, id) => {
   return (dispatch) => {
     dispatch({ type: UPLOADING_KEYS });
     return axios
-      .post(`http://localhost:3000/api/projects/${id}/keys`, {
+      .post(`/api/projects/${id}/keys`, {
         keys
       }, {
         headers: {
@@ -36,7 +36,7 @@ export const uploadLocale = (token, keys, locale, id)  => {
   return (dispatch) => {
     dispatch({ type: IMPORTING_KEYS });
     return axios
-      .patch(`http://localhost:3000/api/projects/${id}/locales`, {
+      .patch(`/api/projects/${id}/locales`, {
         locale,
         keys
       }, {

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../api';
 
 export const SAVING_PROJECT = 'SAVING_PROJECT';
 export const GET_PROJECT = 'GET_PROJECT';
@@ -7,11 +7,11 @@ export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
 const _fetchProject = (token, id) =>
   axios
-  .get(`http://localhost:3000/api/projects/${id}`, {
+  .get(`/api/projects/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  })
+  });
 
 export const fetchProject = (token, id) => {
   return (dispatch) => {
@@ -26,7 +26,7 @@ export const projectSave = (token, id, name) => {
   return (dispatch) => {
     dispatch({ type: SAVING_PROJECT });
     return axios
-      .patch(`http://localhost:3000/api/projects/${id}`, { name }, {
+      .patch(`/api/projects/${id}`, { name }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
