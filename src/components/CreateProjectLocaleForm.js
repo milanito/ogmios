@@ -1,47 +1,136 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import countryLanguage from 'country-language';
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import { MenuItem } from 'material-ui/Menu';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { reduxForm, Field, reset } from 'redux-form';
-import { AutoComplete } from 'material-ui';
-import { findIndex, map, replace, isEqual, filter } from 'lodash';
+import {
+  findIndex, map, replace, isEqual, filter, isEmpty,
+  slice, identity
+} from 'lodash';
 
 import { projectLocalesAdd } from '../actions/locales';
 
-const getSuggestionValue = suggestion => replace(suggestion, /-/g, '_');
+const suggestions = map(countryLanguage.getLocales(), suggestion =>
+  replace(suggestion, /-/g, '_'));
+
+const getSuggestions = (value, locales) => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0
+    ? []
+    : slice(filter(suggestions, suggestion =>
+        isEqual(suggestion.toLowerCase().slice(0, inputLength), inputValue) &&
+        isEqual(findIndex(locales, locale => isEqual(locale.code, suggestion)), -1)),
+      0, 5);
+};
+
+const renderField = ({ home, value, ref, label, ...other }) => (
+  <TextField
+    label={label}
+    autoFocus={home}
+    value={value}
+    inputRef={ref}
+    InputProps={{
+    ...other,
+    }} />
+);
+const renderSuggestion = (suggestion, { query, isHighlighted }) => {
+  const matches = match(suggestion, query);
+  const parts = parse(suggestion, matches);
+  return (
+    <MenuItem selected={isHighlighted} component="div">
+      {map(parts, (part, index) => {
+        return part.highlight ? (
+          <span key={index} style={{ fontWeight: 300 }}>
+            {part.text}
+          </span>
+        ) : (
+          <strong key={index} style={{ fontWeight: 500 }}>
+            {part.text}
+          </strong>
+        );
+      })}
+    </MenuItem>
+  );
+}
+
+
+const renderSuggestionsContainer = (options) => {
+  const { containerProps, children  } = options;
+
+  return (
+    <Paper {...containerProps} square>
+      {children}
+    </Paper>
+  );
+};
 
 class CreateProjectLocaleForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { locale: '' };
+    this.state = { locale: '', suggestions: [] };
   }
 
   handleFormSubmit(props) {
     this.props.projectLocalesAdd(props, this.props.project._id);
   }
 
-  renderSuggestion(suggestion) {
-    return (
-      <div>
-          {replace(suggestion, /-/g, '_')}
-      </div>
-    );
+  handleSuggestionsFetchRequested() {
+    const { locales } = this.props;
+    return ({ value }) => {
+      this.setState({
+        suggestions: getSuggestions(value, locales),
+      });
+    }
+  }
+
+  handleSuggestionsClearRequested() {
+    return () => {
+      this.setState({
+        suggestions: [],
+      });
+    }
+  }
+
+  onChange() {
+    return (event, { newValue }) => {
+      this.setState({ locale: newValue });
+    };
+  }
+
+  selectValue() {
+    return (event, { suggestion }) => {
+      this.setState({ locale: suggestion });
+      this.props.projectLocalesAdd(this.props.token, { locale: suggestion }, this.props.project._id);
+      this.setState({ locale: '' });
+    };
   }
 
   render() {
     const { handleSubmit, t, locales } = this.props;
     const inputProps = {
-      placeholder: t('PROJECT.placeholderNewLocale'),
+      label: t('PROJECT.placeholderNewLocale'),
       value: this.state.locale,
-      onChange: this.onChange
+      onChange: this.onChange()
     };
     return (
       <Autosuggest
-        suggestions={countryLanguage.getLocales()}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={this.renderSuggestion.bind(this)}
+        renderInputComponent={renderField}
+        suggestions={this.state.suggestions}
+        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested()}
+        onSuggestionsClearRequested={this.handleSuggestionsClearRequested()}
+        onSuggestionSelected={this.selectValue()}
+        renderSuggestionsContainer={renderSuggestionsContainer}
+        renderSuggestion={renderSuggestion}
+        getSuggestionValue={identity}
         inputProps={inputProps} />
     )
   }
@@ -49,7 +138,8 @@ class CreateProjectLocaleForm extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  locales: state.locales.list
+  locales: state.locales.list,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

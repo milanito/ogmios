@@ -24,13 +24,13 @@ class ProjectMainName extends Component {
 
   updateName() {
     if (!isEmpty(this.state.name) && !isUndefined(this.props.project)) {
-      this.props.projectSave(this.props.project._id, this.state.name);
+      this.props.projectSave(this.props.token, this.props.project._id, this.state.name);
     }
   }
 
   updateValue() {
-    return (event, value) => {
-      this.setState(set({}, 'name', value));
+    return (event) => {
+      this.setState(set({}, 'name', event.target.value));
     };
   }
   render() {
@@ -57,6 +57,7 @@ class ProjectMainName extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

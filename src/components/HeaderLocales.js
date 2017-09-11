@@ -1,30 +1,26 @@
 import React, { Component } from 'react';
 import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
-import List from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map } from 'lodash';
 
-import HeaderLocales from './HeaderLocales';
+import CreateProjectLocaleForm from './CreateProjectLocaleForm';
 import LocaleItem from './LocaleItem';
 
-class ProjectLocales extends Component {
+class HeaderLocales extends Component {
   render() {
     const { locales, t } = this.props;
     return (
-      <Grid container direction="column">
+      <Grid container direction="row">
         <Grid item xs>
-          <HeaderLocales />
+          <Typography type="headline">
+            {t('PROJECT.totalLocales')} {locales.length}
+          </Typography>
         </Grid>
         <Grid item xs>
-          <Divider />
-        </Grid>
-        <Grid item xs>
-          <List>
-            {map(locales, (locale, i) => <LocaleItem key={i} item={locale} />)}
-          </List>
+          <CreateProjectLocaleForm />
         </Grid>
       </Grid>
     );
@@ -40,5 +36,6 @@ const mapDispatchToProps = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(ProjectLocales));
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(HeaderLocales));
+
 

@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import DeleteIcon from 'material-ui-icons/Delete';
+import Divider from 'material-ui/Divider';
+import IconButton from 'material-ui/IconButton';
 import Flag from 'react-country-flag';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { ListItem } from 'material-ui/List';
-import { IconButton, LinearProgress, Divider } from 'material-ui';
 import {
-  divide, filter, has, get, isEmpty, last, split
+  ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction
+} from 'material-ui/List';
+import {
+  divide, filter, has, get, isEmpty, last, split, join, round
 } from 'lodash';
 
 import { projectLocalesRemove } from '../actions/locales';
 
 class LocaleItem extends Component {
   removeLocale() {
-    const { projectLocalesRemove, item, project } = this.props;
-    projectLocalesRemove(item, project._id);
+    const { projectLocalesRemove, item, project, token } = this.props;
+    projectLocalesRemove(token, item, project._id);
   }
 
   render() {
@@ -22,21 +25,25 @@ class LocaleItem extends Component {
     const localeKeys = item.keys || {};
     const okKeys = filter(keys, key => has(localeKeys, key) && !isEmpty(get(localeKeys, key, '')));
     return (
-      <div>
-        <ListItem rightIcon={<IconButton onClick={this.removeLocale.bind(this)}><DeleteIcon /></IconButton>}>
+      <ListItem>
+        <ListItemIcon>
           <Flag code={last(split(item.code, '_'))} />
-          <h3>{item.code}</h3>
-          <LinearProgress mode="determinate" value={divide(okKeys.length / keys.length * 100)} />
-        </ListItem>
-        <Divider />
-      </div>
+        </ListItemIcon>
+        <ListItemText
+          primary={item.code}
+          secondary={join([round(divide(okKeys.length / keys.length * 100), 2), '%'], ' ')}/>
+        <ListItemSecondaryAction>
+          <IconButton onClick={this.removeLocale.bind(this)}><DeleteIcon /></IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  keys: state.keys.list
+  keys: state.keys.list,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
+import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { TextField } from 'material-ui';
 import { isEmpty } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
 

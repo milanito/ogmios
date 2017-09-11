@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { indexOf } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
-import { TextField } from 'material-ui';
 
 import { projectKeysAdd } from '../actions/keys';
 
-const renderField = ({ input, type, label, meta: { touched, error } }) => (
-  <TextField hintText={label}
-    floatingLabelText={label}
+const renderField = ({ input, type, label }) => (
+  <TextField label={label}
     type={type}
-    errorText={touched && error}
     {...input}
     />
 );
@@ -24,7 +22,7 @@ class CreateProjectKeyForm extends Component {
   }
 
   handleFormSubmit(props) {
-    this.props.projectKeysAdd(props, this.props.project._id);
+    this.props.projectKeysAdd(this.props.token, props, this.props.project._id);
   }
 
   render() {
@@ -62,7 +60,8 @@ function onSubmitSuccess(result, dispatch) {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  keys: state.keys.list
+  keys: state.keys.list,
+  token: state.auth.token
 });
 
 CreateProjectKeyForm = reduxForm({ form: 'createProjectKey', validate, onSubmitSuccess })(CreateProjectKeyForm);

@@ -26,10 +26,12 @@ class Project extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProject(this.props.token, this.props.match.params.projectid);
-    this.props.fetchProjectLocales(this.props.token, this.props.match.params.projectid);
-    this.props.fetchProjectKeys(this.props.token, this.props.match.params.projectid);
-    this.props.fetchProjectUsers(this.props.token, this.props.match.params.projectid);
+    if (this.props.token) {
+      this.props.fetchProject(this.props.token, this.props.match.params.projectid);
+      this.props.fetchProjectLocales(this.props.token, this.props.match.params.projectid);
+      this.props.fetchProjectKeys(this.props.token, this.props.match.params.projectid);
+      this.props.fetchProjectUsers(this.props.token, this.props.match.params.projectid);
+    }
   }
 
   handleChange() {

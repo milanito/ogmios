@@ -52,24 +52,22 @@ class ProjectMain extends Component {
   render() {
     const { t } = this.props;
     return (
-      <div>
-        <Grid container direction="row">
-          <Grid item xs style={projectMainLeftBlock}>
-            <Grid container direction="column">
-              <Grid item xs>
-                <ProjectMainName />
-              </Grid>
-              <Divider />
-              <Grid item xs>
-                <ProjectMainActions />
-              </Grid>
+      <Grid container direction="row">
+        <Grid item xs style={projectMainLeftBlock}>
+          <Grid container direction="column">
+            <Grid item xs>
+              <ProjectMainName />
+            </Grid>
+            <Divider />
+            <Grid item xs>
+              <ProjectMainActions />
             </Grid>
           </Grid>
-          <Grid item xs>
-            <ProjectUsers />
-          </Grid>
         </Grid>
-      </div>
+        <Grid item xs>
+          <ProjectUsers />
+        </Grid>
+      </Grid>
     );
   }
 }

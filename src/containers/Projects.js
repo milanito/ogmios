@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { translate } from 'react-i18next';
@@ -27,7 +28,8 @@ class Projects extends Component {
     if (projects.length === 0) {
       return (
         <Card>
-          <h3>{t('PROJECTS.noProject')}</h3>
+          <ProjectsToolBar />
+          <Typography type="title">{t('PROJECTS.noProject')}</Typography>
         </Card>
       )
     }
