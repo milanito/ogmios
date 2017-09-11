@@ -17,29 +17,22 @@ import { projectKeysRemove } from '../actions/keys';
 class KeyItem extends Component {
   removeKey() {
     const { projectKeysRemove, item, project, token } = this.props;
-    projectKeysRemove(token, item, project._id);
+    projectKeysRemove(token, [ item ], project._id);
   }
 
   render() {
     const { item, locales } = this.props;
     return (
-      <div>
         <ListItem>
           <ListItemText primary={
             <Typography type="body2">
               {item}
             </Typography>
           } />
-          {map(locales, (locale, i) =>
-            <ListItemText key={i} primary={locale.code}
-              secondary={has(locale.keys, item) && !isEmpty(get(locale.keys, item, '')) ? <DoneIcon /> : <ClearIcon />} />
-          )}
           <ListItemSecondaryAction>
             <IconButton onClick={this.removeKey.bind(this)}><DeleteIcon /></IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
-      </div>
     );
   }
 }

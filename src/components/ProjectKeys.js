@@ -4,7 +4,7 @@ import Grid from 'material-ui/Grid';
 import List from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map } from 'lodash';
+import { map, isEqual } from 'lodash';
 import {
   Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle
 } from 'material-ui/Toolbar';

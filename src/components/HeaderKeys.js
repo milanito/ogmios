@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
+import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map } from 'lodash';
 
 import CreateProjectKeyForm from './CreateProjectKeyForm';
+import { projectKeysRemove } from '../actions/keys';
 
 class HeaderKeys extends Component {
+  deleteAll() {
+    return this.props.projectKeysRemove(this.props.token, this.props.keys, this.props.project._id);
+  }
+
   render() {
     const { keys, t } = this.props;
     return (
@@ -21,6 +28,11 @@ class HeaderKeys extends Component {
         <Grid item xs>
           <CreateProjectKeyForm />
         </Grid>
+        <Grid item xs>
+          <IconButton onClick={this.deleteAll.bind(this)}>
+            <ClearIcon />
+          </IconButton>
+        </Grid>
       </Grid>
     );
   }
@@ -28,10 +40,12 @@ class HeaderKeys extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  keys: state.keys.list
+  keys: state.keys.list,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {
+  projectKeysRemove
 };
 
 

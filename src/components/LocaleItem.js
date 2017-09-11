@@ -27,7 +27,7 @@ class LocaleItem extends Component {
     return (
       <ListItem>
         <ListItemIcon>
-          <Flag code={last(split(item.code, '_'))} />
+          <Flag svg code={last(split(item.code, '_'))} />
         </ListItemIcon>
         <ListItemText
           primary={item.code}

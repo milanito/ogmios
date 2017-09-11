@@ -23,16 +23,18 @@ class Project extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 0 };
+    this.state = { value: 0, fetched: false };
   }
 
-  componentDidMount() {
-    if (this.props.token) {
+  componentWillReceiveProps(newProps) {
+    const { token } = newProps;
+    if (token && !this.state.fetched) {
+      this.setState({ fetched: true });
       this.props.clearLocales();
-      this.props.fetchProject(this.props.token, this.props.match.params.projectid);
-      this.props.fetchProjectLocales(this.props.token, this.props.match.params.projectid);
-      this.props.fetchProjectKeys(this.props.token, this.props.match.params.projectid);
-      this.props.fetchProjectUsers(this.props.token, this.props.match.params.projectid);
+      this.props.fetchProject(token, this.props.match.params.projectid);
+      this.props.fetchProjectLocales(token, this.props.match.params.projectid);
+      this.props.fetchProjectKeys(token, this.props.match.params.projectid);
+      this.props.fetchProjectUsers(token, this.props.match.params.projectid);
     }
   }
 

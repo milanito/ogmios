@@ -1,6 +1,5 @@
 import {
   SAVING_KEYS,
-  CREATING_KEYS,
   FETCHING_KEYS,
   GET_KEYS,
   GET_KEYS_FAILURE
@@ -8,8 +7,6 @@ import {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case CREATING_KEYS:
-      return { ...state, creating: true };
     case SAVING_KEYS:
       return { ...state, creating: false };
     case FETCHING_KEYS:

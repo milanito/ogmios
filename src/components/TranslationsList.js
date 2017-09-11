@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Flag from 'react-country-flag';
+import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import Table, {
@@ -6,7 +9,7 @@ import Table, {
 } from 'material-ui/Table';
 import {
   map, get, find, isEqual, reduce, filter,
-  uniq, union, isEmpty
+  uniq, union, isEmpty, last, split
 } from 'lodash';
 
 import TranslationLine from './TranslationLine';
@@ -31,12 +34,28 @@ class TranslationsList extends Component {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>{t('PROJECT.translationsKeys')}</TableCell>
-            <TableCell>{get(find(locales,
-              locale => isEqual(locale.code, localeOne)), 'code', '')}</TableCell>
-            <TableCell>{get(find(locales,
-              locale => isEqual(locale.code, localeTwo)), 'code', '')}</TableCell>
-            <TableCell>{t('PROJECT.translationsActions')}</TableCell>
+            <TableCell>
+              <Typography type="body2">
+                {t('PROJECT.translationsKeys')}
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography type="body2">
+                <Flag svg code={last(split(localeOne, '_'))} />
+                {localeOne}
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography type="body2">
+                <Flag svg code={last(split(localeTwo, '_'))} />
+                {localeTwo}
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography type="body2">
+                {t('PROJECT.translationsActions')}
+              </Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
