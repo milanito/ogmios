@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
+import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
@@ -27,23 +27,18 @@ class ProjectMainActions extends Component {
   render() {
     const { t } = this.props;
     const { isDownloading, isUploading } = this.state;
-    const actions = [];
     return (
       <div>
         <Dialog
-          title={t('PROJECT.downloadFile')}
-          actions={actions}
-          modal={false}
           open={isDownloading}
           onRequestClose={this.handleFile.bind(this, 'isDownloading', false)}>
+          <DialogTitle>{t('PROJECT.downloadFile')}</DialogTitle>
           <DownloadProject />
         </Dialog>
         <Dialog
-          title={t('PROJECT.updloadFile')}
-          actions={actions}
-          modal={false}
           open={isUploading}
           onRequestClose={this.handleFile.bind(this, 'isUploading', false)}>
+          <DialogTitle>{t('PROJECT.uploadFile')}</DialogTitle>
           <UploadProject />
         </Dialog>
         <Grid container direction="row">

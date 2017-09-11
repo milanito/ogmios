@@ -7,7 +7,7 @@ import {
 } from '../actions/auth';
 
 export default (state = { rehydrated: false }, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case AUTH_USER:
       return { ...state, authenticated: true, token: action.token,
         role: action.role, email: action.email, error: {} };

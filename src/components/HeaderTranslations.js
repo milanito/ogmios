@@ -14,14 +14,14 @@ import { map, isEmpty, filter, isEqual } from 'lodash';
 
 import CreateProjectLocaleForm from './CreateProjectLocaleForm';
 import LocaleItem from './LocaleItem';
+import { updateLocale, clearLocales, updateVisible } from '../actions/translations';
 
 class HeaderTranslations extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      localeOne: '', localeTwo: '', visible: true, openOne: false,
-      openTwo: false, anchorEl: null
+      openOne: false, openTwo: false, anchorEl: null
     };
   }
 
@@ -41,24 +41,19 @@ class HeaderTranslations extends Component {
 
   handleChange(locale, first) {
     if (first) {
-      return this.setState({ localeOne: locale, openOne: false });
+      this.setState({ openOne: false });
+      return this.props.updateLocale(locale, true);
     }
-    return this.setState({ localeTwo: locale, openTwo: false });
+    this.setState({ openTwo: false });
+    return this.props.updateLocale(locale, false);
   }
 
   switchVisibility(visible) {
-    this.setState({ visible });
-  }
-
-  clearLocales() {
-    this.setState({
-      localeOne: '',
-      localeTwo: ''
-    });
+    this.props.updateVisible(visible);
   }
 
   renderVisibleIcon() {
-    if (this.state.visible) {
+    if (this.props.visible) {
       return (
         <IconButton onClick={this.switchVisibility.bind(this, false)}>
           <VisibilityIcon />
@@ -74,7 +69,7 @@ class HeaderTranslations extends Component {
 
   renderClearIcon() {
     return (
-      <IconButton onClick={this.clearLocales.bind(this)}>
+      <IconButton onClick={this.props.clearLocales.bind(this)}>
         <ClearIcon />
       </IconButton>
     )
@@ -90,17 +85,17 @@ class HeaderTranslations extends Component {
           </Typography>
         </Grid>
         <Grid item xs>
-          {!isEmpty(this.state.localeOne) || !isEmpty(this.state.localeTwo) ? this.renderVisibleIcon() : <div></div>}
+          {!isEmpty(this.props.localeOne) || !isEmpty(this.props.localeTwo) ? this.renderVisibleIcon() : <div></div>}
         </Grid>
         <Grid item xs>
-          {!isEmpty(this.state.localeOne) || !isEmpty(this.state.localeTwo) ? this.renderClearIcon() : <div></div>}
+          {!isEmpty(this.props.localeOne) || !isEmpty(this.props.localeTwo) ? this.renderClearIcon() : <div></div>}
         </Grid>
         <Grid item xs>
           <List>
             <ListItem button
               onClick={event => this.clickList(event, true)}>
               <ListItemText primary={t('PROJECT.firstLocaleSelection')}
-                secondary={this.state.localeOne}/>
+                secondary={this.props.localeOne}/>
             </ListItem>
           </List>
           <Menu
@@ -110,7 +105,7 @@ class HeaderTranslations extends Component {
             {map(locales, (locale, i) =>
               <MenuItem
                 key={locale.code}
-                selected={locale.code === this.state.localeOne}
+                selected={locale.code === this.props.localeOne}
                 onClick={event => this.handleChange(locale.code, true)}>
                 {locale.code}
               </MenuItem>
@@ -122,7 +117,7 @@ class HeaderTranslations extends Component {
             <ListItem button
               onClick={event => this.clickList(event, false)}>
               <ListItemText primary={t('PROJECT.secondLocaleSelection')}
-                secondary={this.state.localeTwo}/>
+                secondary={this.props.localeTwo}/>
             </ListItem>
           </List>
           <Menu
@@ -130,11 +125,11 @@ class HeaderTranslations extends Component {
             anchorEl={this.state.anchorEl}
             onRequestClose={this.toggleMenu.bind(this, false)}>
             {map(filter(locales, locale =>
-              !isEqual(locale.code, this.state.localeOne)),
+              !isEqual(locale.code, this.props.localeOne)),
               (locale, i) =>
                 <MenuItem
                   key={locale.code}
-                  selected={locale.code === this.state.localeTwo}
+                  selected={locale.code === this.props.localeTwo}
                   onClick={event => this.handleChange(locale.code, false)}>
                   {locale.code}
                 </MenuItem>
@@ -148,14 +143,17 @@ class HeaderTranslations extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  locales: state.locales.list
+  locales: state.locales.list,
+  visible: state.translations.visible,
+  localeOne: state.translations.localeOne,
+  localeTwo: state.translations.localeTwo
 });
 
 const mapDispatchToProps = {
+  updateVisible,
+  updateLocale,
+  clearLocales
 };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate()(HeaderTranslations));
-
-
-

@@ -17,6 +17,7 @@ import { fetchProjectLocales } from '../actions/locales';
 import { fetchProjectKeys } from '../actions/keys';
 import { fetchProjectUsers } from '../actions/users';
 import { projectToolbarTitleStyle } from '../styles/project';
+import { clearLocales } from '../actions/translations';
 
 class Project extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class Project extends Component {
 
   componentDidMount() {
     if (this.props.token) {
+      this.props.clearLocales();
       this.props.fetchProject(this.props.token, this.props.match.params.projectid);
       this.props.fetchProjectLocales(this.props.token, this.props.match.params.projectid);
       this.props.fetchProjectKeys(this.props.token, this.props.match.params.projectid);
@@ -92,7 +94,8 @@ const mapDispatchToProps = {
   fetchProject,
   fetchProjectLocales,
   fetchProjectKeys,
-  fetchProjectUsers
+  fetchProjectUsers,
+  clearLocales
 };
 
 

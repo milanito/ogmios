@@ -10,6 +10,7 @@ import keys from './keys';
 import locales from './locales';
 import projects from './projects';
 import project from './project';
+import translations from './translations';
 import users from './users';
 
 const rootReducer = combineReducers({
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   locales,
   projects,
   project,
+  translations,
   users,
   form
 });

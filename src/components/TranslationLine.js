@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { TextField, IconButton } from 'material-ui';
 import {
-    TableRow,
-    TableRowColumn,
+  TableCell, TableRow
 } from 'material-ui/Table';
 import {
   get, find, isEqual, isEmpty, set, reduce
@@ -39,23 +38,23 @@ class TranslationLine extends Component {
 
   renderColumn(name) {
     return (
-      <TableRowColumn>
+      <TableCell>
         <TextField
           name={name}
           onChange={this.updateValue(name)}
           value={this.state[name]} />
-      </TableRowColumn>
+      </TableCell>
     )
   }
 
   updateValue(key) {
-    return (event, value) => {
-      this.setState(set({}, key, value));
+    return (event) => {
+      this.setState(set({}, key, event.target.value));
     }
   }
 
   clearKeyLocales() {
-    const { localeOne, localeTwo, translationKey, project } = this.props;
+    const { localeOne, localeTwo, translationKey, project, token } = this.props;
 
     const locs = reduce([localeOne, localeTwo], (total, loc) => {
       if (!isEmpty(loc)) {
@@ -69,11 +68,11 @@ class TranslationLine extends Component {
       return total;
     }, []);
 
-    this.props.projectLocalesMultipleUpdate(locs, project._id);
+    this.props.projectLocalesMultipleUpdate(token, locs, project._id);
   }
 
   saveKeyLocales() {
-    const { localeOne, localeTwo, translationKey, project } = this.props;
+    const { localeOne, localeTwo, translationKey, project, token } = this.props;
     const { firstValue, secondValue } = this.state;
 
     const locs = reduce([
@@ -91,20 +90,22 @@ class TranslationLine extends Component {
       return total;
     }, []);
 
-    this.props.projectLocalesMultipleUpdate(locs, project._id);
+    if (!isEmpty(locs)) {
+      this.props.projectLocalesMultipleUpdate(token, locs, project._id);
+    }
   }
 
   render() {
     const { localeOne, localeTwo, translationKey } = this.props;
     return (
       <TableRow>
-        <TableRowColumn>{translationKey}</TableRowColumn>
-        { !isEmpty(localeOne) ? this.renderColumn('firstValue') : <TableRowColumn /> }
-        { !isEmpty(localeTwo) ? this.renderColumn('secondValue') : <TableRowColumn /> }
-        <TableRowColumn>
+        <TableCell>{translationKey}</TableCell>
+        { !isEmpty(localeOne) ? this.renderColumn('firstValue') : <TableCell></TableCell> }
+        { !isEmpty(localeTwo) ? this.renderColumn('secondValue') : <TableCell></TableCell> }
+        <TableCell>
           <IconButton onClick={this.saveKeyLocales.bind(this)}><DoneIcon /></IconButton>
           <IconButton onClick={this.clearKeyLocales.bind(this)}><ClearIcon /></IconButton>
-        </TableRowColumn>
+        </TableCell>
       </TableRow>
     )
   }
@@ -113,6 +114,9 @@ class TranslationLine extends Component {
 const mapStateToProps = (state) => ({
   project: state.project.item,
   locales: state.locales.list,
+  token: state.auth.token,
+  localeOne: state.translations.localeOne,
+  localeTwo: state.translations.localeTwo
 });
 
 const mapDispatchToProps = {

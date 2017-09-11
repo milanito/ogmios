@@ -9,8 +9,7 @@ export const GET_EXPORT_TYPES_FAILURE = 'GET_EXPORT_TYPES_FAILURE';
 export const EXPORT_DOWNLOADING = 'EXPORT_DOWNLOADING';
 export const EXPORT_UPLOADING = 'EXPORT_UPLOADING';
 
-export const fetchExportTypes = () => {
-  const token = localStorage.getItem('token');
+export const fetchExportTypes = (token) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_EXPORT_TYPES });
     return axios
@@ -24,8 +23,7 @@ export const fetchExportTypes = () => {
   };
 };
 
-export const exportProject = (id, locale, type) => {
-  const token = localStorage.getItem('token');
+export const exportProject = (token, id, locale, type) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_EXPORT_PROJECT });
     return axios

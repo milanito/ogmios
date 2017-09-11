@@ -10,17 +10,12 @@ import HeaderTranslations from './HeaderTranslations';
 import TranslationsList from './TranslationsList';
 
 class ProjectLocales extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { localeOne: '', localeTwo: '', visible: true };
-  }
-
   renderTranslationsList() {
-    if (!isEmpty(this.state.localeOne)) {
+    const { localeOne, localeTwo, visible } = this.props;
+    if (!isEmpty(localeOne)) {
       return (
-        <TranslationsList localeOne={this.state.localeOne}
-          localeTwo={this.state.localeTwo} visible={this.state.visible} />
+        <TranslationsList localeOne={localeOne}
+          localeTwo={localeTwo} visible={visible} />
       );
     }
     return (<div></div>);
@@ -46,6 +41,8 @@ class ProjectLocales extends Component {
 const mapStateToProps = (state) => ({
   project: state.project.item,
   locales: state.locales.list,
+  localeOne: state.translations.localeOne,
+  localeTwo: state.translations.localeTwo
 });
 
 const mapDispatchToProps = {
