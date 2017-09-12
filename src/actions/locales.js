@@ -56,13 +56,10 @@ export const projectLocalesAdd = (token, props, id) => {
 export const projectLocalesRemove = (token, locale, id) => {
   return (dispatch) =>
     axios
-    .delete(`/api/projects/${id}/locales`, {
+    .delete(`/api/projects/${id}/locales/${locale.code}`, {
       headers: {
         Authorization: `Bearer ${token}`
       },
-      data: {
-        locale: locale.code
-      }
     })
     .then(() => {
       dispatch({ type: FETCHING_LOCALES });
