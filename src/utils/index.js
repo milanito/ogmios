@@ -3,8 +3,28 @@ import yamljs from 'yamljs';
 import xml2js from 'xml2js';
 import {
   forEach, isEmpty, join, isString, isObject, reduce,
-  tail, split, replace, merge, set, map, get
+  tail, split, replace, merge, set, map, isEqual,
+  get, find
 } from 'lodash';
+
+/*************** PROJECTS FUNCTIONS **************/
+
+export const canDeleteProject = (userid, role, project) => {
+  const user = find(project.users, usr => isEqual(userid, usr.user));
+
+  return isEqual(role, 'admin') ||
+    isEqual(get(user, 'role', 'none'), 'owner');
+};
+
+export const canModifyProject = (userid, role, project) => {
+  const user = find(project.users, usr => isEqual(userid, usr.user));
+
+  return isEqual(role, 'admin') ||
+    isEqual(get(user, 'role', 'none'), 'owner') ||
+    isEqual(get(user, 'role', 'none'), 'editor');
+};
+
+/*************** PARSING FUNCTIONS ***************/
 
 const xmlParser = Promise.promisify(xml2js.parseString);
 

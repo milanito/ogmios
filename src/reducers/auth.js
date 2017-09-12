@@ -10,7 +10,7 @@ export default (state = { rehydrated: false }, action) => {
   switch (action.type) {
     case AUTH_USER:
       return { ...state, authenticated: true, token: action.token,
-        role: action.role, email: action.email, error: {} };
+        role: action.role, email: action.email, userid: action.userid, error: {} };
     case LOGIN_FAILURE:
       return { ...state, error: { login: action.payload } };
     case LOGOUT:

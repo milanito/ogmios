@@ -13,6 +13,7 @@ import { map, last, split } from 'lodash';
 
 import { projectsRemove } from '../actions/projects';
 import { projectCardStyle } from '../styles/project';
+import { canDeleteProject } from '../utils';
 
 class ProjectCard extends Component {
   redirectToProject(id) {
@@ -26,6 +27,22 @@ class ProjectCard extends Component {
         <Flag code={last(split(locale.code, '_'))} svg />
       </Grid>
     )
+  }
+
+  renderDelete() {
+    const { project, projectsRemove, t, token, role } = this.props;
+
+    if (canDeleteProject(this.props.userid, this.props.role, this.props.project)) {
+      return (
+        <ListItemSecondaryAction>
+          <IconButton
+            onClick={projectsRemove.bind(this, token, project._id)}>
+            <Clear />
+          </IconButton>
+        </ListItemSecondaryAction>
+      )
+    }
+    return (<div></div>)
   }
 
   render() {
@@ -54,19 +71,16 @@ class ProjectCard extends Component {
               </Grid>
             </Grid>
           </Grid>
-          <ListItemSecondaryAction>
-            <IconButton
-              onClick={projectsRemove.bind(this, token, project._id)}>
-              <Clear />
-            </IconButton>
-          </ListItemSecondaryAction>
+          {this.renderDelete()}
         </ListItem>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token
+  token: state.auth.token,
+  role: state.auth.role,
+  userid: state.auth.userid
 });
 
 const mapDispatchToProps = {

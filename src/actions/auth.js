@@ -23,6 +23,7 @@ export const loginUser = (props) => {
         .then((resp) => {
           dispatch({
             type: AUTH_USER,
+            userid: resp.data._id,
             token: data.token,
             email: resp.data.email,
             role: resp.data.role

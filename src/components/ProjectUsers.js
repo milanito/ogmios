@@ -1,22 +1,37 @@
 import React, { Component } from 'react';
-import AccountCircleIcon from 'material-ui-icons/AccountCircle';
+import Avatar from 'material-ui/Avatar';
+import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map, isEqual } from 'lodash';
-import { Chip, Avatar } from 'material-ui';
+import { map, isEqual, first, upperCase } from 'lodash';
 
 class ProjectUsers extends Component {
   handleDelete(user) {
   }
 
+  changeRole(user) {
+  }
+
   renderUser(user, i) {
+    if (isEqual(user.role, 'owner')) {
+      return (
+        <Grid  key={i} item xs>
+          <Chip
+            avatar={<Avatar>{first(upperCase(user.role))}</Avatar>}
+            label={user.email}/>
+        </Grid>
+      )
+    }
     return (
-      <Chip key={i}
-        onRequestDelete={this.handleDelete.bind(this, user)}
-        avatar={<Avatar><AccountCircleIcon /></Avatar>}
-        label={user.email}/>
+      <Grid  key={i} item xs>
+        <Chip
+          onClick={this.changeRole.bind(this, user)}
+          onRequestDelete={this.handleDelete.bind(this, user)}
+          avatar={<Avatar>{first(upperCase(user.role))}</Avatar>}
+          label={user.email}/>
+      </Grid>
     )
   }
 
@@ -30,7 +45,9 @@ class ProjectUsers extends Component {
           </Typography>
         </Grid>
         <Grid item xs>
-          {map(users, (user, i) => this.renderUser(user, i))}
+          <Grid container direction="row">
+            {map(users, (user, i) => this.renderUser(user, i))}
+          </Grid>
         </Grid>
       </Grid>
     );
