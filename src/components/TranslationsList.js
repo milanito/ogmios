@@ -16,9 +16,20 @@ import TranslationLine from './TranslationLine';
 
 
 class TranslationsList extends Component {
+  shouldComponentUpdate(newProps) {
+    const { keys, locales, localeOne, localeTwo, visible } = this.props;
+
+    return !isEqual(newProps.keys.sort(), keys.sort()) ||
+      !isEqual(newProps.locales.sort(), locales.sort()) ||
+      !isEqual(newProps.localeOne, localeOne) ||
+      !isEqual(newProps.localeTwo, localeTwo) ||
+      !isEqual(newProps.visible, visible);
+  }
+
   render() {
     const { keys, locales, localeOne, localeTwo, t, visible } = this.props;
     let realKeys = keys.sort();
+
     if (!visible) {
       realKeys = reduce([localeOne, localeTwo], (total, code) => {
         const locale = find(locales, lcl => isEqual(lcl.code, code));
@@ -41,13 +52,13 @@ class TranslationsList extends Component {
             </TableCell>
             <TableCell>
               <Typography type="body2">
-                <Flag svg code={last(split(localeOne, '_'))} />
+                {localeOne && <Flag svg code={last(split(localeOne, '_'))} />}
                 {localeOne}
               </Typography>
             </TableCell>
             <TableCell>
               <Typography type="body2">
-                <Flag svg code={last(split(localeTwo, '_'))} />
+                {localeTwo && <Flag svg code={last(split(localeTwo, '_'))} />}
                 {localeTwo}
               </Typography>
             </TableCell>
@@ -59,7 +70,11 @@ class TranslationsList extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-          {map(realKeys, (key, i) => <TranslationLine key={i} translationKey={key} localeOne={localeOne} localeTwo={localeTwo} />)}
+          {map(realKeys, key =>
+            <TranslationLine key={key}
+              translationKey={key}
+              localeOne={localeOne}
+              localeTwo={localeTwo} />)}
         </TableBody>
       </Table>
     );

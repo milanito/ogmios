@@ -1,11 +1,12 @@
 import axios from '../api';
 
+export const FETCHING_CLIENT = 'FETCHING_CLIENT';
 export const GET_CLIENT = 'GET_CLIENT';
 export const GET_CLIENT_FAILURE = 'GET_CLIENT_FAILURE';
 
-export const fetchClient = (id) => {
+export const fetchClient = (token, id) => {
   return (dispatch) => {
-    const token = localStorage.getItem('token');
+    dispatch({ type: FETCHING_CLIENT });
     return axios
       .get(`/api/clients/${id}`, {
         headers: {

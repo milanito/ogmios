@@ -41,6 +41,7 @@ const renderField = ({ home, value, ref, label, ...other }) => (
     ...other,
     }} />
 );
+
 const renderSuggestion = (suggestion, { query, isHighlighted }) => {
   const matches = match(suggestion, query);
   const parts = parse(suggestion, matches);
@@ -60,7 +61,6 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
     </MenuItem>
   );
 }
-
 
 const renderSuggestionsContainer = (options) => {
   const { containerProps, children  } = options;

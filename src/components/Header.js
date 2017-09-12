@@ -54,9 +54,15 @@ class Header extends Component {
             <Typography type="title" style={appbarTitleStyle}>
               {t('NAVBAR.title')}
             </Typography>
-            <Typography type="subheading" style={emailStyle}>
-              {email}
-            </Typography>
+            <Link to="/settings">
+              <Typography type="subheading" style={emailStyle}>
+                {email}
+              </Typography>
+            </Link>
+              { authenticated &&
+                <IconButton onClick={this.fullLogout.bind(this)}>
+                  <CancelIcon />
+                </IconButton>}
           </Toolbar>
         </AppBar>
         <Drawer open={isOpen && authenticated}
@@ -83,10 +89,6 @@ class Header extends Component {
                 )
               }
             })()}
-            <ListItem button onClick={this.fullLogout.bind(this)}>
-              <ListItemIcon><CancelIcon /></ListItemIcon>
-              <ListItemText primary={t('NAVBAR.logout')} />
-            </ListItem>
           </List>
         </Drawer>
       </div>

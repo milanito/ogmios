@@ -37,10 +37,12 @@ class TranslationLine extends Component {
   }
 
   renderColumn(name) {
+    const { translationKey } = this.props;
     return (
       <TableCell>
         <TextField
           name={name}
+          multiline={true}
           onChange={this.updateValue(name)}
           value={this.state[name]} />
       </TableCell>

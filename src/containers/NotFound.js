@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
+import Card from 'material-ui/Card';
+import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Card } from 'material-ui';
 
 class NotFound extends Component {
   render() {
     const { t } = this.props;
     return (
       <Card>
-        <h1>{t('NOTFOUND.title')}</h1>
-        <Link to="/projects">{t('NOTFOUND.homeLink')}</Link>
+        <Grid container direction="column">
+          <Grid item xs>
+            <Typography type="title">
+              {t('NOTFOUND.title')}
+            </Typography>
+          </Grid>
+          <Grid item xs>
+            <Link to="/projects">
+              <Typography type="subheading">
+                {t('NOTFOUND.homeLink')}
+              </Typography>
+            </Link>
+          </Grid>
+        </Grid>
       </Card>
     );
   }

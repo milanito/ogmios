@@ -15,6 +15,20 @@ const _fetchProjectUsers = (token, id) =>
     }
   });
 
+export const fetchAllUsers = (token) => {
+  return (dispatch) => {
+    dispatch({ type: FETCHING_USERS });
+    return axios
+      .get(`/api/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(({ data }) => dispatch({ type: GET_USERS, users: data }))
+      .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
+  };
+};
+
 export const projectUsersCreating = () => {
   return (dispatch) => {
     dispatch({ type: CREATING_USERS });

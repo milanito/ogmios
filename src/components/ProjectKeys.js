@@ -13,6 +13,10 @@ import HeaderKeys from './HeaderKeys';
 import KeyItem from './KeyItem';
 
 class ProjectKeys extends Component {
+  shouldComponentUpdate(newProps) {
+    return !isEqual(newProps.keys.sort(), this.props.keys.sort());
+  }
+
   render() {
     const { keys, t } = this.props;
     return (
@@ -25,7 +29,7 @@ class ProjectKeys extends Component {
         </Grid>
         <Grid item xs>
           <List>
-            {map(keys.sort(), (key, i) => <KeyItem key={i} item={key} />)}
+            {map(keys.sort(), key => <KeyItem key={key} item={key} />)}
           </List>
         </Grid>
       </Grid>
