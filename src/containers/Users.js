@@ -8,6 +8,8 @@ import { map } from 'lodash';
 import { translate } from 'react-i18next';
 import { LinearProgress } from 'material-ui/Progress';
 
+import UsersToolbar from '../components/UsersToolbar';
+import UserCard from '../components/UserCard';
 import { fetchAllUsers } from '../actions/users';
 import { listStyle, elementStyle } from '../styles/lists';
 
@@ -28,9 +30,11 @@ class Users extends Component {
     const { users, t } = this.props;
     return (
       <Card>
+        <UsersToolbar />
         <List style={listStyle}>
           {map(users, (user) =>(
-          <Paper style={elementStyle} key={user.id}>
+          <Paper style={elementStyle} key={user._id}>
+            <UserCard user={user} />
           </Paper>
           ))}
         </List>

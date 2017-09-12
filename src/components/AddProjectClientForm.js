@@ -10,11 +10,11 @@ import { translate } from 'react-i18next';
 import { reduxForm, Field, reset } from 'redux-form';
 import {
   findIndex, map, replace, isEqual, filter, isEmpty,
-  slice, identity
+  slice, identity, trim, lowerCase, join
 } from 'lodash';
 
 import { fetchProjects } from '../actions/projects';
-import {} from '../actions/clients';
+import { clientAddProject } from '../actions/client';
 
 const renderField = ({ home, value, ref, label, ...other }) => (
   <TextField
@@ -28,13 +28,13 @@ const renderField = ({ home, value, ref, label, ...other }) => (
 );
 
 const getSuggestions = (value, projects) => {
-  const inputValue = value.trim().toLowerCase();
+  const inputValue = lowerCase(trim(value));
   const inputLength = inputValue.length;
 
   return inputLength === 0
     ? []
-    : slice(filter(projects, project =>
-        isEqual(project.name.toLowerCase().slice(0, inputLength), inputValue)),
+    : slice(filter(projects, project => {
+        return isEqual(join(slice(lowerCase(project.name), 0, inputLength), ''), inputValue)}),
       0, 5);
 }
 
@@ -106,9 +106,9 @@ class AddProjectClientForm extends Component {
 
   selectValue() {
     return (event, { suggestion }) => {
-      this.setState({ projectname: suggestion });
-      // this.props.clientAddProject(props, this.props.client._id);
-      // this.setState({ projectname: '' });
+      this.setState({ projectname: suggestion.name });
+      this.props.clientAddProject(this.props.token, this.props.client.id, suggestion._id);
+      this.setState({ projectname: '' });
     };
   }
 
@@ -135,13 +135,14 @@ class AddProjectClientForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  client: state.client.items,
+  client: state.client.item,
   projects: state.projects.list,
   token: state.auth.token
 });
 
 const mapDispatchToProps = {
   fetchProjects,
+  clientAddProject
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddProjectClientForm));

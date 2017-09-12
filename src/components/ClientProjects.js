@@ -40,7 +40,7 @@ class ClientProjects extends Component {
             <List style={listStyle}>
               {map(client.projects, (project) =>(
               <Paper style={elementStyle} key={project._id}>
-                <ProjectCard project={project} />
+                <ProjectCard project={project} client={client}/>
               </Paper>
               ))}
             </List>

@@ -7,7 +7,11 @@ import {
   get, find
 } from 'lodash';
 
-/*************** PROJECTS FUNCTIONS **************/
+/*************** ROLES FUNCTIONS **************/
+
+export const canDeleteUser = (userid, role, user) => {
+  return isEqual(role, 'admin') && !isEqual(userid, user._id);
+};
 
 export const canDeleteProject = (userid, role, project) => {
   const user = find(project.users, usr => isEqual(userid, usr.user));

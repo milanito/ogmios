@@ -29,16 +29,20 @@ export const fetchAllUsers = (token) => {
   };
 };
 
-export const projectUsersCreating = () => {
+export const usersCreating = () => {
   return (dispatch) => {
     dispatch({ type: CREATING_USERS });
   };
 };
 
-export const projectUsersSaving = () => {
+export const usersSaving = () => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
   };
+};
+
+export const usersRemove = (token, id) => {
+  return (dispatch) => {};
 };
 
 export const fetchProjectUsers = (token, id) => {

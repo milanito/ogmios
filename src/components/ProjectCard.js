@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 import { map, last, split } from 'lodash';
 
 import { projectsRemove } from '../actions/projects';
+import { clientRemoveProject } from '../actions/client';
 import { projectCardStyle } from '../styles/project';
 import { canDeleteProject } from '../utils';
 
@@ -19,6 +20,15 @@ class ProjectCard extends Component {
   redirectToProject(id) {
     const { project } = this.props;
     this.props.history.push(`/project/${project._id}`);
+  }
+
+  remove() {
+    const { project, projectsRemove, clientRemoveProject, token, client } = this.props;
+    if (client) {
+      clientRemoveProject(token, client.id, project._id);
+    } else {
+      projectsRemove(token, project._id);
+    }
   }
 
   renderLocale(locale, ks) {
@@ -36,7 +46,7 @@ class ProjectCard extends Component {
       return (
         <ListItemSecondaryAction>
           <IconButton
-            onClick={projectsRemove.bind(this, token, project._id)}>
+            onClick={this.remove.bind(this)}>
             <Clear />
           </IconButton>
         </ListItemSecondaryAction>
@@ -84,7 +94,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  projectsRemove
+  projectsRemove,
+  clientRemoveProject
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(translate()(ProjectCard)));
