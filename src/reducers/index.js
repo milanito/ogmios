@@ -13,6 +13,7 @@ import project from './project';
 import translations from './translations';
 import upload from './upload';
 import users from './users';
+import user from './user';
 
 const rootReducer = combineReducers({
   auth,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   translations,
   upload,
   users,
+  user,
   form
 });
 

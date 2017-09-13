@@ -91,13 +91,13 @@ export const projectUsersRemove = (token, user, id) => {
     .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
 };
 
-export const projectUsersUpdate = (token, user, id, key, value) => {
+export const projectUsersUpdate = (token, user, id, role) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios
       .patch(`/api/projects/${id}/users`, {
         user,
-        keys: set({}, key, value)
+        role
       },{
         headers: {
           Authorization: `Bearer ${token}`
