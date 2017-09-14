@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
@@ -6,7 +8,7 @@ import Typography from 'material-ui/Typography';
 import { TextField } from 'material-ui';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { get, set, isEmpty, isUndefined, isEqual } from 'lodash';
+import { get, set, isEmpty, isUndefined, isEqual, map } from 'lodash';
 
 import { updateUser } from '../actions/user';
 import { updateData } from '../actions/auth';
@@ -15,9 +17,16 @@ class UserRole extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { role: '' };
+    this.state = { open: false, role: '', anchorEl: null };
   }
 
+  clickList(event) {
+    return this.setState({ open: true, anchorEl: event.currentTarget });
+  }
+
+  toggleMenu() {
+    return this.setState({ open: false });
+  }
 
   componentWillReceiveProps(newProps) {
     this.setState({ role: get(newProps, 'user.role', '') });
@@ -27,35 +36,37 @@ class UserRole extends Component {
     }
   }
 
-  updateRole() {
-    if (!isEmpty(this.state.role) && !isUndefined(this.props.user)) {
-      this.props.updateUser(this.props.token, this.props.user._id,
-        { role: this.state.role });
-    }
-  }
-
-  updateValue() {
-    return (event) => {
-      this.setState(set({}, 'role', event.target.value));
-    };
+  handleChange(role) {
+    this.props.updateUser(this.props.token, this.props.user._id,
+      { role });
   }
 
   render() {
     const { t } = this.props;
+    const roles = ['admin', 'user'];
     return (
       <Grid container direction="row">
         <Grid item xs>
-          <TextField
-            label={t('USER.fieldRole')}
-            onChange={this.updateValue()}
-            value={this.state.role}
-            type="text" />
-        </Grid>
-        <Grid item xs>
-          <Button raised
-            onClick={this.updateRole.bind(this)}>
-            {t('USER.validate')}
-          </Button>
+          <List>
+            <ListItem button
+              onClick={event => this.clickList(event, true)}>
+              <ListItemText primary={t('USER.fieldRole')}
+                secondary={this.state.role}/>
+            </ListItem>
+          </List>
+          <Menu
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            onRequestClose={this.toggleMenu.bind(this, true)}>
+            {map(roles, (role, i) =>
+              <MenuItem
+                key={i}
+                selected={role === this.state.role}
+                onClick={event => this.handleChange(role, true)}>
+                {role}
+              </MenuItem>
+            )}
+          </Menu>
         </Grid>
       </Grid>
     );
