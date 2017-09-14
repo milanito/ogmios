@@ -8,6 +8,7 @@ import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
+import CreateUserForm from './CreateUserForm';
 import { usersSaving, usersCreating } from '../actions/users';
 import {
   projectsToolbarTitleStyle, projectsCreateStyle
@@ -46,6 +47,7 @@ class UsersToolbar extends Component {
           onRequestClose={this.toggleCreate.bind(this, false)}>
           <DialogTitle>{t('USERS.createNew')}</DialogTitle>
           <DialogContent>
+            <CreateUserForm />
           </DialogContent>
         </Dialog>
       </div>

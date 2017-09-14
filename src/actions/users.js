@@ -14,16 +14,18 @@ const _fetchProjectUsers = (token, id) =>
       Authorization: `Bearer ${token}`
     }
   });
+const _fetchAllUsers = (token) =>
+  axios
+  .get('/api/users', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
 export const fetchAllUsers = (token) => {
   return (dispatch) => {
     dispatch({ type: FETCHING_USERS });
-    return axios
-      .get(`/api/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+    return _fetchAllUsers(token)
       .then(({ data }) => dispatch({ type: GET_USERS, users: data }))
       .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
   };
@@ -106,6 +108,28 @@ export const projectUsersUpdate = (token, user, id, role) => {
       .then(() => {
         dispatch({ type: FETCHING_USERS });
         return _fetchProjectUsers(token, id);
+      })
+      .then(({ data }) => dispatch({ type: GET_USERS, users: data }))
+      .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));
+  };
+};
+
+export const usersAdd = (token, email, password, role) => {
+  return (dispatch) => {
+    dispatch({ type: SAVING_USERS });
+    return axios
+      .post(`/api/users`, {
+        email,
+        password,
+        role
+      },{
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        dispatch({ type: FETCHING_USERS });
+        return _fetchAllUsers(token);
       })
       .then(({ data }) => dispatch({ type: GET_USERS, users: data }))
       .catch(({ data }) => dispatch({ type: GET_USERS_FAILURE, payload: data }));

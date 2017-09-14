@@ -27,14 +27,15 @@ const renderField = ({ home, value, ref, label, ...other }) => (
     }} />
 );
 
-const getSuggestions = (value, projects) => {
+const getSuggestions = (value, projects, client) => {
   const inputValue = lowerCase(trim(value));
   const inputLength = inputValue.length;
 
   return inputLength === 0
     ? []
-    : slice(filter(projects, project => {
-        return isEqual(join(slice(lowerCase(project.name), 0, inputLength), ''), inputValue)}),
+    : slice(filter(projects, project =>
+        isEqual(join(slice(lowerCase(project.name), 0, inputLength), ''), inputValue) &&
+        isEqual(findIndex(client.projects, proj => isEqual(proj._id, project._id)), -1)),
       0, 5);
 }
 
@@ -82,10 +83,10 @@ class AddProjectClientForm extends Component {
   }
 
   handleSuggestionsFetchRequested() {
-    const { projects } = this.props;
+    const { projects, client } = this.props;
     return ({ value }) => {
       this.setState({
-        suggestions: getSuggestions(value, projects),
+        suggestions: getSuggestions(value, projects, client),
       });
     }
   }

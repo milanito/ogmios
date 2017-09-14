@@ -11,48 +11,49 @@ import { get, set, isEmpty, isUndefined, isEqual } from 'lodash';
 import { updateUser } from '../actions/user';
 import { updateData } from '../actions/auth';
 
-class UserEmail extends Component {
+class UserRole extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { email: '' };
+    this.state = { role: '' };
   }
 
 
   componentWillReceiveProps(newProps) {
-    this.setState({ email: get(newProps, 'user.email', '') });
-    if (!isEqual(this.props.user.email, this.props.email) &&
+    this.setState({ role: get(newProps, 'user.role', '') });
+    if (!isEqual(this.props.user.role, this.props.role) &&
       isEqual(this.props.user._id, this.props.userid)) {
       this.props.updateData(this.props.token);
     }
   }
 
-  updateEmail() {
-    if (!isEmpty(this.state.email) && !isUndefined(this.props.user)) {
+  updateRole() {
+    if (!isEmpty(this.state.role) && !isUndefined(this.props.user)) {
       this.props.updateUser(this.props.token, this.props.user._id,
-        { email: this.state.email });
+        { role: this.state.role });
     }
   }
 
   updateValue() {
     return (event) => {
-      this.setState(set({}, 'email', event.target.value));
+      this.setState(set({}, 'role', event.target.value));
     };
   }
+
   render() {
     const { t } = this.props;
     return (
       <Grid container direction="row">
         <Grid item xs>
           <TextField
-            label={t('USER.fieldEmail')}
+            label={t('USER.fieldRole')}
             onChange={this.updateValue()}
-            value={this.state.email}
+            value={this.state.role}
             type="text" />
         </Grid>
         <Grid item xs>
           <Button raised
-            onClick={this.updateEmail.bind(this)}>
+            onClick={this.updateRole.bind(this)}>
             {t('USER.validate')}
           </Button>
         </Grid>
@@ -63,7 +64,7 @@ class UserEmail extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user.item,
-  email: state.auth.email,
+  role: state.auth.role,
   token: state.auth.token,
   userid: state.auth.userid
 });
@@ -74,7 +75,8 @@ const mapDispatchToProps = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(UserEmail));
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(UserRole));
+
 
 
 

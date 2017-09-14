@@ -16,7 +16,7 @@ import {
 
 import ProjectCard from '../components/ProjectCard';
 import AddProjectClientForm from './AddProjectClientForm';
-import {} from '../actions/client';
+import { clientUpdate } from '../actions/client';
 import { listStyle, elementStyle } from '../styles/lists';
 
 class ClientMain extends Component {
@@ -33,17 +33,15 @@ class ClientMain extends Component {
 
   updateName() {
     if (!isEmpty(this.state.name) && !isUndefined(this.props.client)) {
-      //this.props.clientSave(this.props.client.id, this.state.name);
+      this.props.clientUpdate(this.props.token, this.props.client.id,
+        { name: this.state.name });
     }
   }
 
   updateValue() {
-    return (event, value) => {
-      this.setState(set({}, 'name', value));
+    return (event) => {
+      this.setState(set({}, 'name', event.target.value));
     };
-  }
-
-  copyField(type) {
   }
 
   handleCloseNotif() {
@@ -55,11 +53,6 @@ class ClientMain extends Component {
     return (
       <Paper>
         <Grid container direction="column">
-          <Grid item xs>
-            <Typography type="title">
-              {t('CLIENT.title')}
-            </Typography>
-          </Grid>
           <Grid item xs>
             <TextField
               label={t('CLIENT.fieldName')}
@@ -112,9 +105,11 @@ class ClientMain extends Component {
 
 const mapStateToProps = (state) => ({
   client: state.client.item,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {
+  clientUpdate
 };
 
 

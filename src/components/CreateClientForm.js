@@ -7,7 +7,7 @@ import { translate } from 'react-i18next';
 import { isEmpty } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
 
-import { projectsAdd } from '../actions/projects';
+import { clientsAdd } from '../actions/clients';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
   <TextField label={label}
@@ -18,7 +18,7 @@ const renderField = ({ input, type, label, meta: { touched, error } }) => (
     />
 );
 
-class CreateProjectForm extends Component {
+class CreateClientForm extends Component {
   constructor(props) {
     super(props);
 
@@ -26,23 +26,23 @@ class CreateProjectForm extends Component {
   }
 
   handleFormSubmit(props) {
-    this.props.projectsAdd(this.props.token, props);
+    this.props.clientsAdd(this.props.token, props);
   }
 
   render() {
     const { handleSubmit, t } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
-        <Grid container direction="column" align="center">
-          <Grid item xs>
-            <Field name="name" component={renderField} type="text"
-              label={t('PROJECTS.placeholderName')} />
+        <form onSubmit={handleSubmit(this.handleFormSubmit)}>
+          <Grid container direction="column" align="center">
+            <Grid item xs>
+              <Field name="name" component={renderField} type="text"
+                label={t('CLIENTS.placeholderName')} />
+            </Grid>
+            <Grid item xs>
+              <Button raised type="submit">{t('CLIENT.validate')}</Button>
+            </Grid>
           </Grid>
-          <Grid item xs>
-            <Button raised type="submit">{t('PROJECT.validate')}</Button>
-          </Grid>
-        </Grid>
-      </form>
+        </form>
     )
   }
 }
@@ -58,18 +58,17 @@ function validate(formProps) {
 }
 
 function onSubmitSuccess(result, dispatch) {
-  dispatch(reset('createProject'));
+  dispatch(reset('createClient'));
 }
 
 const mapStateToProps = (state) => ({
   token: state.auth.token
 });
 
-CreateProjectForm = reduxForm({ form: 'createProject', validate, onSubmitSuccess })(CreateProjectForm);
+CreateClientForm = reduxForm({ form: 'createClient', validate, onSubmitSuccess })(CreateClientForm);
 
 const mapDispatchToProps = {
-  projectsAdd
+  clientsAdd
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(CreateProjectForm));
-
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(CreateClientForm));

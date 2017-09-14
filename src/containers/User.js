@@ -9,6 +9,7 @@ import { translate } from 'react-i18next';
 import { LinearProgress } from 'material-ui';
 
 import UserEmail from '../components/UserEmail';
+import UserRole from '../components/UserRole';
 import { projectToolbarTitleStyle } from '../styles/project';
 import { fetchUser } from '../actions/user';
 
@@ -51,6 +52,9 @@ class User extends Component {
           <Grid container direction="column" align="center">
             <Grid item xs>
               <UserEmail />
+            </Grid>
+            <Grid item xs>
+              <UserRole />
             </Grid>
           </Grid>
         </Paper>

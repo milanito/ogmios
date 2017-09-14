@@ -33,5 +33,19 @@ export const fetchMe = (token) => {
 };
 
 export const updateUser = (token, id, props) => {
-  return (dispatch) => {};
+  return (dispatch) => {
+    dispatch({ type: SAVING_USER });
+    return axios
+      .patch(`/api/users/${id}`, props, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        dispatch({ type: FETCHING_USER });
+        return _fetchUser(token, id);
+      })
+      .then(({ data }) => dispatch({ type: GET_USER, user: data }))
+      .catch(({ data }) => dispatch({ type: GET_USER_FAILURE, payload: data }));
+  };
 };

@@ -8,6 +8,7 @@ import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 
+import CreateClientForm from './CreateClientForm';
 import {
   clientsSaving, clientsCreating
 } from '../actions/clients';
@@ -47,6 +48,7 @@ class ClientsToolBar extends Component {
           onRequestClose={this.toggleCreate.bind(this, false)}>
           <DialogTitle>{t('CLIENTS.createNew')}</DialogTitle>
           <DialogContent>
+            <CreateClientForm />
           </DialogContent>
         </Dialog>
       </div>

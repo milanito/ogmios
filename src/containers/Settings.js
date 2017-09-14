@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import AppBar from 'material-ui/AppBar';
+import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -9,6 +10,7 @@ import { translate } from 'react-i18next';
 import { LinearProgress } from 'material-ui';
 
 import UserEmail from '../components/UserEmail';
+import UserPassword from '../components/UserPassword';
 import { projectToolbarTitleStyle } from '../styles/project';
 import { fetchMe } from '../actions/user';
 
@@ -51,6 +53,9 @@ class Settings extends Component {
           <Grid container direction="column" align="center">
             <Grid item xs>
               <UserEmail />
+            </Grid>
+            <Grid item xs>
+              <UserPassword />
             </Grid>
           </Grid>
         </Paper>
