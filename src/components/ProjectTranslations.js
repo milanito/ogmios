@@ -3,8 +3,7 @@ import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map, filter, isEqual, isEmpty } from 'lodash';
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { isEmpty } from 'lodash';
 
 import HeaderTranslations from './HeaderTranslations';
 import TranslationsList from './TranslationsList';

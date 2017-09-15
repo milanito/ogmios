@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Tabs, { Tab } from 'material-ui/Tabs';
 import AppBar from 'material-ui/AppBar';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -17,7 +16,7 @@ class User extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 0, fetched: false };
+    this.state = { fetched: false };
   }
 
   componentWillReceiveProps(newProps) {
@@ -35,8 +34,7 @@ class User extends Component {
   }
 
   renderUser() {
-    const { user, t } = this.props;
-    const { value } = this.state;
+    const { user } = this.props;
     return (
       <div>
         <AppBar position="static">

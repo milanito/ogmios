@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Typography from 'material-ui/Typography';
 import List from 'material-ui/List';
 import Card from 'material-ui/Card';
 import Paper from 'material-ui/Paper';
@@ -14,8 +13,18 @@ import { fetchAllUsers } from '../actions/users';
 import { listStyle, elementStyle } from '../styles/lists';
 
 class Users extends Component {
-  componentDidMount() {
-    this.props.fetchAllUsers(this.props.token);
+  constructor(props) {
+    super(props);
+
+    this.state = { fetched: false };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { token } = newProps;
+    if (token && !this.state.fetched) {
+      this.setState({ fetched: true });
+      this.props.fetchAllUsers(token);
+    }
   }
 
   render() {
@@ -27,7 +36,7 @@ class Users extends Component {
   }
 
   renderUsers() {
-    const { users, t } = this.props;
+    const { users } = this.props;
     return (
       <Card>
         <UsersToolbar />

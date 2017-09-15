@@ -12,9 +12,7 @@ import CreateClientForm from './CreateClientForm';
 import {
   clientsSaving, clientsCreating
 } from '../actions/clients';
-import {
-  projectsToolbarTitleStyle, projectsCreateStyle
-} from '../styles/projects';
+import { projectsToolbarTitleStyle } from '../styles/projects';
 
 
 class ClientsToolBar extends Component {

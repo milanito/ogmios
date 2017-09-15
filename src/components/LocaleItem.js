@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DeleteIcon from 'material-ui-icons/Delete';
-import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import Flag from 'react-country-flag';
 import { connect } from 'react-redux';

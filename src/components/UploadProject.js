@@ -31,7 +31,7 @@ class UploadProject extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const { uploading, uploaded, importing, imported } = newProps;
+    const { uploaded, imported } = newProps;
     if (uploaded && this.state.next) {
       this.setState({ next: false });
       this.props.uploadLocale(this.props.token, this.state.json,
@@ -92,7 +92,7 @@ class UploadProject extends Component {
   }
 
   render() {
-    const { t, locales, uploading, uploaded, importing, imported } = this.props;
+    const { t, uploading, uploaded, importing, imported } = this.props;
     const { json } = this.state;
 
     if (uploading && !uploaded && !importing && !imported) {

@@ -1,5 +1,4 @@
 import axios from '../api';
-import { set } from 'lodash';
 
 export const FETCHING_USERS = 'FETCHING_USERS';
 export const GET_USERS = 'GET_USERS';
@@ -40,14 +39,15 @@ export const usersRemove = (token, id) => {
   return (dispatch) => {};
 };
 
-export const usersAdd = (token, email, password, role) => {
+export const usersAdd = (token, { email, password, role, username }) => {
   return (dispatch) => {
     dispatch({ type: SAVING_USERS });
     return axios
       .post(`/api/users`, {
         email,
         password,
-        role
+        role,
+        username
       },{
         headers: {
           Authorization: `Bearer ${token}`

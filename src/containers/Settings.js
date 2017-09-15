@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Tabs, { Tab } from 'material-ui/Tabs';
 import AppBar from 'material-ui/AppBar';
-import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -18,7 +16,7 @@ class Settings extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 0, fetched: false };
+    this.state = { fetched: false };
   }
 
   componentWillReceiveProps(newProps) {
@@ -29,15 +27,8 @@ class Settings extends Component {
     }
   }
 
-  handleChange() {
-    return (event, value) => {
-      this.setState({ value });
-    };
-  }
-
   renderUser() {
-    const { user, t } = this.props;
-    const { value } = this.state;
+    const { user } = this.props;
     return (
       <div>
         <AppBar position="static">

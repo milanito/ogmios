@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as EmailValidator from 'email-validator';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
@@ -56,13 +57,12 @@ class LoginForm extends Component {
 
 function validate(formProps) {
   const errors = {};
-  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
   if (!formProps.email) {
     errors.email = 'Email is required'
   }
 
-  if (!re.test(formProps.email)) {
+  if (!EmailValidator.validate(formProps.email)) {
     errors.email = 'Email is invalid';
   }
 

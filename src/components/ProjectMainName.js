@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
 import { TextField } from 'material-ui';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';

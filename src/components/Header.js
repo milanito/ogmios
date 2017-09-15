@@ -11,7 +11,6 @@ import BookIcon from 'material-ui-icons/Book';
 import SettingsIcon from 'material-ui-icons/Settings';
 import SettingsRemoteIcon from 'material-ui-icons/SettingsRemote';
 import CancelIcon from 'material-ui-icons/Cancel';
-import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { translate } from 'react-i18next';

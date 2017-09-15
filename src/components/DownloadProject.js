@@ -7,7 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
-  map, set, has, isEqual, get, nth, isUndefined, merge
+  map, set, has, isEqual, get, isUndefined, merge
 } from 'lodash';
 
 import { fetchExportTypes, exportProject } from '../actions/export';

@@ -8,10 +8,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
-import { size } from 'lodash';
 
 import { clientsRemove } from '../actions/clients';
-import { projectCardStyle } from '../styles/project';
 
 class ClientCard extends Component {
   redirectToClient() {

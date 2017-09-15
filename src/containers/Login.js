@@ -30,7 +30,7 @@ class Login extends Component {
         </Grid>
         <Snackbar
           open={!isEmpty(get(error, 'login.message', ''))}
-          message={get(error, 'login.message', '')}
+          message={t(get(error, 'login.message', ''))}
           autoHideDuration={4000} />
       </Grid>
     );

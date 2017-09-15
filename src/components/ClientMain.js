@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
-import List from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
 import Snackbar from 'material-ui/Snackbar';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
-  get, set, isEmpty, isUndefined, map
+  get, set, isEmpty, isUndefined
 } from 'lodash';
 
-import ProjectCard from '../components/ProjectCard';
-import AddProjectClientForm from './AddProjectClientForm';
 import { clientUpdate } from '../actions/client';
-import { listStyle, elementStyle } from '../styles/lists';
 
 class ClientMain extends Component {
   constructor(props) {

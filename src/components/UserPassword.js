@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
-import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import { TextField } from 'material-ui';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { reduxForm, Field, reset } from 'redux-form';
 import {
-  get, set, isEmpty, isUndefined, isEqual, pick
+  isEmpty, isEqual, pick
 } from 'lodash';
 
 import { updateUser } from '../actions/user';
@@ -67,15 +66,6 @@ class UserPassword extends Component {
 
 function validate(formProps) {
   const errors = {};
-  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-  if(!formProps.email) {
-    errors.name = 'Email is required'
-  }
-
-  if (!re.test(formProps.email)) {
-    errors.email = 'Email is invalid';
-  }
 
   if (!formProps.password) {
     errors.password = 'Password is required'

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map } from 'lodash';
 
 import CreateProjectLocaleForm from './CreateProjectLocaleForm';
-import LocaleItem from './LocaleItem';
 
 class HeaderLocales extends Component {
   render() {

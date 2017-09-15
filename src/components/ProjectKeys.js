@@ -5,9 +5,6 @@ import List from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map, isEqual } from 'lodash';
-import {
-  Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle
-} from 'material-ui/Toolbar';
 
 import HeaderKeys from './HeaderKeys';
 import KeyItem from './KeyItem';
@@ -18,7 +15,7 @@ class ProjectKeys extends Component {
   }
 
   render() {
-    const { keys, t } = this.props;
+    const { keys } = this.props;
     return (
       <Grid container direction="column">
         <Grid item xs>

@@ -10,13 +10,12 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
 import {
-  map, last, split, round, multiply, divide, size, keys, filter,
-  isEmpty, get
+  map, last, split, size,
+  get
 } from 'lodash';
 
 import { projectsRemove } from '../actions/projects';
 import { clientRemoveProject } from '../actions/client';
-import { projectCardStyle } from '../styles/project';
 import { canDeleteProject } from '../utils';
 
 class ProjectCard extends Component {
@@ -43,9 +42,9 @@ class ProjectCard extends Component {
   }
 
   renderDelete() {
-    const { project, projectsRemove, t, token, role } = this.props;
+    const { project, role, userid } = this.props;
 
-    if (canDeleteProject(this.props.userid, this.props.role, this.props.project)) {
+    if (canDeleteProject(userid, role, project)) {
       return (
         <ListItemSecondaryAction>
           <IconButton
@@ -59,7 +58,7 @@ class ProjectCard extends Component {
   }
 
   render() {
-    const { project, projectsRemove, t, token } = this.props;
+    const { project, t } = this.props;
     return (
         <ListItem button
           onClick={this.redirectToProject.bind(this, project._id)} >

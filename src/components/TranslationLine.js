@@ -37,7 +37,6 @@ class TranslationLine extends Component {
   }
 
   renderColumn(name) {
-    const { translationKey } = this.props;
     return (
       <TableCell>
         <TextField

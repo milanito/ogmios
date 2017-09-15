@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import List, { ListItem, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
@@ -12,8 +11,6 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map, isEmpty, filter, isEqual } from 'lodash';
 
-import CreateProjectLocaleForm from './CreateProjectLocaleForm';
-import LocaleItem from './LocaleItem';
 import { updateLocale, clearLocales, updateVisible } from '../actions/translations';
 
 class HeaderTranslations extends Component {
@@ -91,53 +88,71 @@ class HeaderTranslations extends Component {
           {!isEmpty(this.props.localeOne) || !isEmpty(this.props.localeTwo) ? this.renderClearIcon() : <div></div>}
         </Grid>
         <Grid item xs>
-          <List>
-            <ListItem button
-              onClick={event => this.clickList(event, true)}>
-              <ListItemText primary={t('PROJECT.firstLocaleSelection')}
-                secondary={this.props.localeOne}/>
-            </ListItem>
-          </List>
-          <Menu
-            open={this.state.openOne}
-            anchorEl={this.state.anchorEl}
-            onRequestClose={this.toggleMenu.bind(this, true)}>
-            {map(locales, (locale, i) =>
-              <MenuItem
-                key={locale.code}
-                selected={locale.code === this.props.localeOne}
-                onClick={event => this.handleChange(locale.code, true)}>
-                {locale.code}
-              </MenuItem>
-            )}
-          </Menu>
+          {this.renderFirstLocale()}
         </Grid>
         <Grid item xs>
-          <List>
-            <ListItem button
-              onClick={event => this.clickList(event, false)}>
-              <ListItemText primary={t('PROJECT.secondLocaleSelection')}
-                secondary={this.props.localeTwo}/>
-            </ListItem>
-          </List>
-          <Menu
-            open={this.state.openTwo}
-            anchorEl={this.state.anchorEl}
-            onRequestClose={this.toggleMenu.bind(this, false)}>
-            {map(filter(locales, locale =>
-              !isEqual(locale.code, this.props.localeOne)),
-              (locale, i) =>
-                <MenuItem
-                  key={locale.code}
-                  selected={locale.code === this.props.localeTwo}
-                  onClick={event => this.handleChange(locale.code, false)}>
-                  {locale.code}
-                </MenuItem>
-            )}
-          </Menu>
+          {locales.length > 1 && this.renderSecondLocale()}
         </Grid>
       </Grid>
     );
+  }
+
+  renderFirstLocale() {
+    const { locales, t, localeOne } = this.props;
+    return (
+      <div>
+        <List>
+          <ListItem button
+            onClick={event => this.clickList(event, true)}>
+            <ListItemText primary={t('PROJECT.firstLocaleSelection')}
+              secondary={localeOne}/>
+          </ListItem>
+        </List>
+        <Menu
+          open={this.state.openOne}
+          anchorEl={this.state.anchorEl}
+          onRequestClose={this.toggleMenu.bind(this, true)}>
+          {map(locales, (locale, i) =>
+            <MenuItem
+              key={locale.code}
+              selected={locale.code === localeOne}
+              onClick={event => this.handleChange(locale.code, true)}>
+              {locale.code}
+            </MenuItem>
+          )}
+        </Menu>
+      </div>
+    )
+  }
+
+  renderSecondLocale() {
+    const { locales, t, localeOne, localeTwo } = this.props;
+    return (
+      <div>
+        <List>
+          <ListItem button
+            onClick={event => this.clickList(event, false)}>
+            <ListItemText primary={t('PROJECT.secondLocaleSelection')}
+              secondary={localeTwo}/>
+          </ListItem>
+        </List>
+        <Menu
+          open={this.state.openTwo}
+          anchorEl={this.state.anchorEl}
+          onRequestClose={this.toggleMenu.bind(this, false)}>
+          {map(filter(locales, locale =>
+            !isEqual(locale.code, localeOne)),
+            (locale, i) =>
+              <MenuItem
+                key={locale.code}
+                selected={locale.code === this.props.localeTwo}
+                onClick={event => this.handleChange(locale.code, false)}>
+                {locale.code}
+              </MenuItem>
+          )}
+        </Menu>
+      </div>
+    )
   }
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as EmailValidator from 'email-validator';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
@@ -36,7 +37,11 @@ class CreateUserForm extends Component {
           <Grid container direction="column" align="center">
             <Grid item xs>
               <Field name="email" component={renderField} type="text"
-                label={t('USERS.placeholderName')} />
+                label={t('USERS.placeholderEmail')} />
+            </Grid>
+            <Grid item xs>
+              <Field name="username" component={renderField} type="text"
+                label={t('USERS.placeholderUsername')} />
             </Grid>
             <Grid item xs>
               <Field name="password" component={renderField} type="password"
@@ -57,13 +62,16 @@ class CreateUserForm extends Component {
 
 function validate(formProps) {
   const errors = {};
-  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+  if(!formProps.username) {
+    errors.name = 'Username is required'
+  }
 
   if(!formProps.email) {
     errors.name = 'Email is required'
   }
 
-  if (!re.test(formProps.email)) {
+  if (!EmailValidator.validate(formProps.email)) {
     errors.email = 'Email is invalid';
   }
 

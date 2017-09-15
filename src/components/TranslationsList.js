@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Flag from 'react-country-flag';
-import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';

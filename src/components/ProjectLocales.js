@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import List from 'material-ui/List';
-import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { map } from 'lodash';
@@ -12,7 +11,7 @@ import LocaleItem from './LocaleItem';
 
 class ProjectLocales extends Component {
   render() {
-    const { locales, t } = this.props;
+    const { locales } = this.props;
     return (
       <Grid container direction="column">
         <Grid item xs>

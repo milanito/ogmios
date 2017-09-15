@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import List from 'material-ui/List';
 import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import {
-  get, set, isEmpty, isUndefined, map
-} from 'lodash';
+import { map } from 'lodash';
 
 import ProjectCard from '../components/ProjectCard';
 import AddProjectClientForm from './AddProjectClientForm';

@@ -9,9 +9,8 @@ import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { map, last, split, isEqual } from 'lodash';
+import { last, split, isEqual } from 'lodash';
 
-import { projectCardStyle } from '../styles/project';
 import { canDeleteUser } from '../utils';
 import { projectUsersRemove, projectUsersUpdate } from '../actions/project';
 import { usersRemove } from '../actions/users';
@@ -39,7 +38,6 @@ class UserCard extends Component {
 
   remove() {
     const { user, usersRemove, projectUsersRemove, token, project } = this.props;
-    console.log(user);
     if (project) {
       projectUsersRemove(token, project._id, user._id);
     } else {
@@ -48,8 +46,6 @@ class UserCard extends Component {
   }
 
   renderDelete() {
-    const { user, usersRemove, t, token, role } = this.props;
-
     if (canDeleteUser(this.props.userid, this.props.role, this.props.user)) {
       return (
         <ListItemSecondaryAction>
@@ -64,7 +60,7 @@ class UserCard extends Component {
   }
 
   render() {
-    const { user, usersRemove, t, token } = this.props;
+    const { user } = this.props;
     return (
         <ListItem button
           onClick={this.redirectToUser.bind(this, user._id)} >

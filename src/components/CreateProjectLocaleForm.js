@@ -8,9 +8,8 @@ import parse from 'autosuggest-highlight/parse';
 import { MenuItem } from 'material-ui/Menu';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { reduxForm, Field, reset } from 'redux-form';
 import {
-  findIndex, map, replace, isEqual, filter, isEmpty,
+  findIndex, map, replace, isEqual, filter,
   slice, identity
 } from 'lodash';
 
@@ -116,7 +115,7 @@ class CreateProjectLocaleForm extends Component {
   }
 
   render() {
-    const { handleSubmit, t, locales } = this.props;
+    const { t } = this.props;
     const inputProps = {
       label: t('PROJECT.placeholderNewLocale'),
       value: this.state.locale,

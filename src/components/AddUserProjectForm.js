@@ -7,10 +7,9 @@ import parse from 'autosuggest-highlight/parse';
 import { MenuItem } from 'material-ui/Menu';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { reduxForm, Field, reset } from 'redux-form';
 import {
-  findIndex, map, replace, isEqual, filter, isEmpty,
-  slice, identity, trim, lowerCase, join
+  findIndex, map, isEqual, filter,
+  slice, trim, lowerCase, join
 } from 'lodash';
 
 import { fetchAllUsers } from '../actions/users';
@@ -118,7 +117,7 @@ class AddUserProjectForm extends Component {
   }
 
   render() {
-    const { t, projects, client } = this.props;
+    const { t } = this.props;
     const inputProps = {
       placeholder: t('PROJECT.placeholderNewUser'),
       value: this.state.email,

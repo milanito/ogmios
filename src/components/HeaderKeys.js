@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
-import Divider from 'material-ui/Divider';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import ClearIcon from 'material-ui-icons/Clear';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map } from 'lodash';
 
 import CreateProjectKeyForm from './CreateProjectKeyForm';
 import { projectKeysRemove } from '../actions/keys';

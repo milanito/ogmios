@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import List from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { map, isEqual, first, upperCase } from 'lodash';
+import { map } from 'lodash';
 
 import UserCard from './UserCard';
 import AddUserProjectForm from './AddUserProjectForm';
