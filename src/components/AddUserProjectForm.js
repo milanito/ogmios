@@ -13,8 +13,8 @@ import {
   slice, identity, trim, lowerCase, join
 } from 'lodash';
 
-import { fetchProjects } from '../actions/projects';
-import { clientAddProject } from '../actions/client';
+import { fetchAllUsers } from '../actions/users';
+import { projectUsersAdd } from '../actions/project';
 import { suggestChoiceContainer } from '../styles/common';
 
 const renderField = ({ home, value, ref, label, ...other }) => (
@@ -28,23 +28,23 @@ const renderField = ({ home, value, ref, label, ...other }) => (
     }} />
 );
 
-const getSuggestions = (value, projects, client) => {
+const getSuggestions = (value, users, project) => {
   const inputValue = lowerCase(trim(value));
   const inputLength = inputValue.length;
 
   return inputLength === 0
     ? []
-    : slice(filter(projects, project =>
-        isEqual(join(slice(lowerCase(project.name), 0, inputLength), ''), inputValue) &&
-        isEqual(findIndex(client.projects, proj => isEqual(proj._id, project._id)), -1)),
+    : slice(filter(users, user =>
+        isEqual(join(slice(lowerCase(user.email), 0, inputLength), ''), inputValue) &&
+        isEqual(findIndex(project.users, usr => isEqual(user._id, usr._id)), -1)),
       0, 5);
 }
 
-const getSuggestionValue = suggestion => suggestion.name;
+const getSuggestionValue = suggestion => suggestion.email;
 
 const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match(suggestion.name, query);
-  const parts = parse(suggestion.name, matches);
+  const matches = match(suggestion.email, query);
+  const parts = parse(suggestion.email, matches);
   return (
     <MenuItem selected={isHighlighted} component="div">
       {map(parts, (part, index) => {
@@ -72,22 +72,22 @@ const renderSuggestionsContainer = (options) => {
   );
 };
 
-class AddProjectClientForm extends Component {
+class AddUserProjectForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { projectname: '', suggestions: [] };
+    this.state = { email: '', suggestions: [] };
   }
 
   componentDidMount() {
-    this.props.fetchProjects(this.props.token);
+    this.props.fetchAllUsers(this.props.token);
   }
 
   handleSuggestionsFetchRequested() {
-    const { projects, client } = this.props;
+    const { users, project } = this.props;
     return ({ value }) => {
       this.setState({
-        suggestions: getSuggestions(value, projects, client),
+        suggestions: getSuggestions(value, users, project),
       });
     }
   }
@@ -102,23 +102,26 @@ class AddProjectClientForm extends Component {
 
   onChange() {
     return (event, { newValue }) => {
-      this.setState({ projectname: newValue });
+      this.setState({ email: newValue });
     };
   }
 
   selectValue() {
     return (event, { suggestion }) => {
       this.setState({ projectname: suggestion.name });
-      this.props.clientAddProject(this.props.token, this.props.client.id, suggestion._id);
-      this.setState({ projectname: '' });
+      this.props.projectUsersAdd(this.props.token, this.props.project._id, {
+        user: suggestion._id,
+        role: 'normal'
+      });
+      this.setState({ email: '' });
     };
   }
 
   render() {
     const { t, projects, client } = this.props;
     const inputProps = {
-      placeholder: t('CLIENT.placeholderNewProject'),
-      value: this.state.projectname,
+      placeholder: t('PROJECT.placeholderNewUser'),
+      value: this.state.email,
       onChange: this.onChange()
     };
     return (
@@ -137,18 +140,14 @@ class AddProjectClientForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  client: state.client.item,
-  projects: state.projects.list,
+  project: state.project.item,
+  users: state.users.list,
   token: state.auth.token
 });
 
 const mapDispatchToProps = {
-  fetchProjects,
-  clientAddProject
+  fetchAllUsers,
+  projectUsersAdd
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddProjectClientForm));
-
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddUserProjectForm));

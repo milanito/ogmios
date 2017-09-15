@@ -8,7 +8,8 @@ import { reduxForm, Field, reset } from 'redux-form';
 import { projectKeysAdd } from '../actions/keys';
 
 const renderField = ({ input, type, label }) => (
-  <TextField label={label}
+  <TextField fullWidth
+    label={label}
     type={type}
     {...input}
     />

@@ -54,44 +54,61 @@ class ClientMain extends Component {
       <Paper>
         <Grid container direction="column">
           <Grid item xs>
-            <TextField
-              label={t('CLIENT.fieldName')}
-              onChange={this.updateValue()}
-              value={this.state.name}
-              type="text" />
-            <Button raised
-              onClick={this.updateName.bind(this)}>
-              {t('CLIENT.validate')}
-            </Button>
-          </Grid>
-          <Divider />
-          <Grid item xs>
-            <TextField fullWidth
-              label={t('CLIENT.fieldId')}
-              disabled={true}
-              value={client.id}
-              type="text" />
-            <CopyToClipboard
-              onCopy={() => this.setState({ notif: true })}
-              text={client.id}>
-              <Button raised>
-                {t('CLIENT.copy')}
-              </Button>
-            </CopyToClipboard>
+            <Grid container direction="row">
+              <Grid item xs={10}>
+                <TextField fullWidth
+                  label={t('CLIENT.fieldName')}
+                  onChange={this.updateValue()}
+                  value={this.state.name}
+                  type="text" />
+              </Grid>
+              <Grid item xs>
+                <Button raised
+                  onClick={this.updateName.bind(this)}>
+                  {t('CLIENT.validate')}
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs>
-            <TextField fullWidth
-              label={t('CLIENT.fieldToken')}
-              disabled={true}
-              value={client.token}
-              type="text" />
-            <CopyToClipboard
-              onCopy={() => this.setState({ notif: true })}
-              text={client.token}>
-              <Button raised>
-                {t('CLIENT.copy')}
-              </Button>
-            </CopyToClipboard>
+            <Grid container direction="row">
+              <Grid item xs={10}>
+                <TextField fullWidth
+                  label={t('CLIENT.fieldId')}
+                  disabled={true}
+                  value={client.id}
+                  type="text" />
+              </Grid>
+              <Grid item xs>
+                <CopyToClipboard
+                  onCopy={() => this.setState({ notif: true })}
+                  text={client.id}>
+                  <Button raised>
+                    {t('CLIENT.copy')}
+                  </Button>
+                </CopyToClipboard>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container direction="row">
+              <Grid item xs={10}>
+                <TextField fullWidth
+                  label={t('CLIENT.fieldToken')}
+                  disabled={true}
+                  value={client.token}
+                  type="text" />
+              </Grid>
+              <Grid item xs>
+                <CopyToClipboard
+                  onCopy={() => this.setState({ notif: true })}
+                  text={client.token}>
+                  <Button raised>
+                    {t('CLIENT.copy')}
+                  </Button>
+                </CopyToClipboard>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <Snackbar open={this.state.notif}

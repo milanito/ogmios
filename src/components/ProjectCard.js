@@ -9,7 +9,10 @@ import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { map, last, split } from 'lodash';
+import {
+  map, last, split, round, multiply, divide, size, keys, filter,
+  isEmpty, get
+} from 'lodash';
 
 import { projectsRemove } from '../actions/projects';
 import { clientRemoveProject } from '../actions/client';
@@ -31,7 +34,7 @@ class ProjectCard extends Component {
     }
   }
 
-  renderLocale(locale, ks) {
+  renderLocale(locale) {
     return (
       <Grid item key={locale.code}>
         <Flag code={last(split(locale.code, '_'))} svg />
@@ -67,13 +70,13 @@ class ProjectCard extends Component {
             <Divider />
             <Grid item xs>
               <Grid container direction="row">
-                {map(project.locales, locale => this.renderLocale(locale, project.keys))}
+                {map(project.locales, locale => this.renderLocale(locale))}
               </Grid>
             </Grid>
             <Grid item xs>
               <Grid container direction="row">
                 <Grid item>
-                  <Typography type="body1">{project.keys.length || 0}</Typography>
+                  <Typography type="body1">{size(get(project, 'keys', []))}</Typography>
                 </Grid>
                 <Grid item>
                   <Typography type="body2">{t('PROJECTS.keysInProject')}</Typography>

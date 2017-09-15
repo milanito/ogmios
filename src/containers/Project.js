@@ -12,10 +12,9 @@ import ProjectMain from '../components/ProjectMain';
 import ProjectLocales from '../components/ProjectLocales';
 import ProjectKeys from '../components/ProjectKeys';
 import ProjectTranslations from '../components/ProjectTranslations';
-import { fetchProject } from '../actions/project';
+import { fetchProject, fetchProjectUsers } from '../actions/project';
 import { fetchProjectLocales } from '../actions/locales';
 import { fetchProjectKeys } from '../actions/keys';
-import { fetchProjectUsers } from '../actions/users';
 import { projectToolbarTitleStyle } from '../styles/project';
 import { clearLocales } from '../actions/translations';
 

@@ -14,8 +14,18 @@ import { fetchClients } from '../actions/clients';
 import { listStyle, elementStyle } from '../styles/lists';
 
 class Clients extends Component {
-  componentDidMount() {
-    this.props.fetchClients(this.props.token);
+  constructor(props) {
+    super(props);
+
+    this.state = { fetched: false };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { token } = newProps;
+    if (token && !this.state.fetched) {
+      this.setState({ fetched: true });
+      this.props.fetchClients(token);
+    }
   }
 
   render() {
@@ -32,7 +42,9 @@ class Clients extends Component {
       return (
         <Card>
           <ClientsToolBar />
-          <Typography type="title">{t('CLIENTS.noClient')}</Typography>
+          <List style={listStyle}>
+            <Typography type="title">{t('CLIENTS.noClient')}</Typography>
+          </List>
         </Card>
       )
     }

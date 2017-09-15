@@ -15,6 +15,7 @@ import {
 } from 'lodash';
 
 import { projectLocalesAdd } from '../actions/locales';
+import { suggestChoiceContainer } from '../styles/common';
 
 const suggestions = map(countryLanguage.getLocales(), suggestion =>
   replace(suggestion, /-/g, '_'));
@@ -32,7 +33,7 @@ const getSuggestions = (value, locales) => {
 };
 
 const renderField = ({ home, value, ref, label, ...other }) => (
-  <TextField
+  <TextField fullWidth
     label={label}
     autoFocus={home}
     value={value}
@@ -63,10 +64,10 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
 }
 
 const renderSuggestionsContainer = (options) => {
-  const { containerProps, children  } = options;
+  const { containerProps, children } = options;
 
   return (
-    <Paper {...containerProps} square>
+    <Paper {...containerProps} square style={suggestChoiceContainer}>
       {children}
     </Paper>
   );

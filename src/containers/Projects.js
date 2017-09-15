@@ -14,8 +14,18 @@ import { fetchProjects } from '../actions/projects';
 import { listStyle, elementStyle } from '../styles/lists';
 
 class Projects extends Component {
-  componentDidMount() {
-    this.props.fetchProjects(this.props.token);
+  constructor(props) {
+    super(props);
+
+    this.state = { fetched: false };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { token } = newProps;
+    if (token && !this.state.fetched) {
+      this.setState({ fetched: true });
+      this.props.fetchProjects(token);
+    }
   }
 
   render() {
@@ -32,7 +42,9 @@ class Projects extends Component {
       return (
         <Card>
           <ProjectsToolBar />
-          <Typography type="title">{t('PROJECTS.noProject')}</Typography>
+          <List style={listStyle}>
+            <Typography type="title">{t('PROJECTS.noProject')}</Typography>
+          </List>
         </Card>
       )
     }

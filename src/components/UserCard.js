@@ -13,9 +13,8 @@ import { map, last, split, isEqual } from 'lodash';
 
 import { projectCardStyle } from '../styles/project';
 import { canDeleteUser } from '../utils';
-import {
-  usersRemove, projectUsersRemove, projectUsersUpdate
-} from '../actions/users';
+import { projectUsersRemove, projectUsersUpdate } from '../actions/project';
+import { usersRemove } from '../actions/users';
 
 class UserCard extends Component {
   redirectToUser(id) {
@@ -24,7 +23,7 @@ class UserCard extends Component {
       this.props.history.push(`/user/${user._id}`);
     } else {
       if (!isEqual(user.role, 'owner')) {
-        this.props.projectUsersUpdate(token, user._id, project._id,
+        this.props.projectUsersUpdate(token, project._id, user._id,
           isEqual(user.role, 'normal') ? 'editor' : 'normal');
       }
     }
@@ -39,9 +38,10 @@ class UserCard extends Component {
   }
 
   remove() {
-    const { user, usersRemove, projectUserRemove, token, project } = this.props;
+    const { user, usersRemove, projectUsersRemove, token, project } = this.props;
+    console.log(user);
     if (project) {
-      projectUserRemove(token, user._id, project._id);
+      projectUsersRemove(token, project._id, user._id);
     } else {
       usersRemove(token, user._id);
     }
@@ -54,7 +54,7 @@ class UserCard extends Component {
       return (
         <ListItemSecondaryAction>
           <IconButton
-            onClick={usersRemove.bind(this, token, user._id)}>
+            onClick={this.remove.bind(this)}>
             <Clear />
           </IconButton>
         </ListItemSecondaryAction>

@@ -9,14 +9,9 @@ import { translate } from 'react-i18next';
 import { map, isEqual, first, upperCase } from 'lodash';
 
 import UserCard from './UserCard';
+import AddUserProjectForm from './AddUserProjectForm';
 
 class ProjectUsers extends Component {
-  handleDelete(user) {
-  }
-
-  changeRole(user) {
-  }
-
   render() {
     const { users, t, project } = this.props;
     return (
@@ -25,6 +20,9 @@ class ProjectUsers extends Component {
           <Typography type="subheading">
             {t('PROJECT.usersList')}
           </Typography>
+        </Grid>
+        <Grid item xs>
+          <AddUserProjectForm />
         </Grid>
         <Grid item xs>
           <List>
@@ -38,7 +36,7 @@ class ProjectUsers extends Component {
 
 const mapStateToProps = (state) => ({
   project: state.project.item,
-  users: state.users.list,
+  users: state.project.users,
 });
 
 const mapDispatchToProps = {

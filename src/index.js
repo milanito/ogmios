@@ -15,8 +15,9 @@ import history from './history';
 
 import registerServiceWorker from './registerServiceWorker';
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, undefined,
-  compose(applyMiddleware(reduxThunk), autoRehydrate()));
+  composeEnhancers(applyMiddleware(reduxThunk), autoRehydrate()));
 
 persistStore(store);
 

@@ -14,7 +14,8 @@ import {
 import { updateUser } from '../actions/user';
 
 const renderField = ({ input, type, label, meta: { touched, error } }) => (
-  <TextField label={label}
+  <TextField fullWidth
+    label={label}
     type={type}
     error={touched && !isEmpty(error)}
     helperText={touched && error}

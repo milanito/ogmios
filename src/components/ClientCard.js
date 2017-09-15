@@ -4,14 +4,13 @@ import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
-import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
+import { ListItem, ListItemSecondaryAction } from 'material-ui/List';
+import { size } from 'lodash';
 
-import {
-  clientsRemove
-} from '../actions/clients';
+import { clientsRemove } from '../actions/clients';
 import { projectCardStyle } from '../styles/project';
 
 class ClientCard extends Component {
@@ -21,14 +20,24 @@ class ClientCard extends Component {
   }
 
   render() {
-    const { client, clientsRemove, token } = this.props;
+    const { client, clientsRemove, token, t } = this.props;
     return (
         <ListItem button
           onClick={this.redirectToClient.bind(this)}>
-          <Typography type="title">{client.name}</Typography>
+          <Grid container direction="column">
+            <Grid item xs>
+              <Typography type="title">{client.name}</Typography>
+            </Grid>
+            <Divider />
+            <Grid item xs>
+              <Typography type="body1">
+                {client.projects} {t('CLIENTS.projectsSize')}
+              </Typography>
+            </Grid>
+          </Grid>
           <ListItemSecondaryAction>
             <IconButton
-              onClick={clientsRemove.bind(this, token, client._id)}>
+              onClick={clientsRemove.bind(this, token, client.id)}>
               <Clear />
             </IconButton>
           </ListItemSecondaryAction>
@@ -38,6 +47,7 @@ class ClientCard extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  token: state.auth.token
 });
 
 const mapDispatchToProps = {

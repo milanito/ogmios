@@ -37,8 +37,8 @@ class ProjectMainName extends Component {
     const { t } = this.props;
     return (
       <Grid container direction="row">
-        <Grid item xs>
-          <TextField
+        <Grid item xs={8}>
+          <TextField fullWidth
             label={t('PROJECT.fieldName')}
             onChange={this.updateValue()}
             value={this.state.name}

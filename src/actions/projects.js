@@ -8,7 +8,7 @@ export const SAVING_PROJECTS = 'SAVING_PROJECTS';
 
 const _fetchProjects = (token) =>
   axios
-  .get('http://localhost:3000/api/projects', {
+  .get('/api/projects', {
     headers: {
       Authorization: `Bearer ${token}`
     }
