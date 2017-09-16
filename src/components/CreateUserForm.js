@@ -5,8 +5,8 @@ import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { isEmpty, isEqual } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
+import { isEmpty, isEqual, findIndex } from 'lodash';
 
 import { usersAdd } from '../actions/users';
 
@@ -60,11 +60,12 @@ class CreateUserForm extends Component {
   }
 }
 
-function validate(formProps) {
+function validate(formProps, props) {
   const errors = {};
+  const { users } = props;
 
   if(!formProps.username) {
-    errors.name = 'Username is required'
+    errors.username = 'Username is required'
   }
 
   if(!formProps.email) {
@@ -73,6 +74,13 @@ function validate(formProps) {
 
   if (!EmailValidator.validate(formProps.email)) {
     errors.email = 'Email is invalid';
+  }
+
+  const idx = findIndex(users,
+    user => isEqual(user.email, formProps.email));
+
+  if (idx > -1) {
+    errors.email = 'User already registered';
   }
 
   if (!formProps.password) {
@@ -95,7 +103,8 @@ function onSubmitSuccess(result, dispatch) {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token
+  token: state.auth.token,
+  users: state.users.list
 });
 
 CreateUserForm = reduxForm({ form: 'createUser', validate, onSubmitSuccess })(CreateUserForm);

@@ -4,8 +4,8 @@ import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { isEmpty } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
+import { isEmpty, findIndex, isEqual } from 'lodash';
 
 import { clientsAdd } from '../actions/clients';
 
@@ -47,11 +47,19 @@ class CreateClientForm extends Component {
   }
 }
 
-function validate(formProps) {
+function validate(formProps, props) {
   const errors = {};
+  const { clients } = props;
 
   if(!formProps.name) {
-    errors.name = 'name is required'
+    errors.name = 'Name is required'
+  }
+
+  const idx = findIndex(clients,
+    client => isEqual(client.name, formProps.name));
+
+  if (idx > -1) {
+    errors.name = 'Client already exists';
   }
 
   return errors;
@@ -62,7 +70,8 @@ function onSubmitSuccess(result, dispatch) {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token
+  token: state.auth.token,
+  clients: state.clients.list
 });
 
 CreateClientForm = reduxForm({ form: 'createClient', validate, onSubmitSuccess })(CreateClientForm);

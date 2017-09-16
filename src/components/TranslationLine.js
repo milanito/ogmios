@@ -39,7 +39,7 @@ class TranslationLine extends Component {
   renderColumn(name) {
     return (
       <TableCell>
-        <TextField
+        <TextField fullWidth
           name={name}
           multiline={true}
           onChange={this.updateValue(name)}

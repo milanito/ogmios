@@ -41,7 +41,7 @@ class Client extends Component {
     const { value } = this.state;
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="static" color="default">
           <Grid container direction="row">
             <Grid item xs>
               <Typography type="title" color="inherit" style={projectToolbarTitleStyle}>

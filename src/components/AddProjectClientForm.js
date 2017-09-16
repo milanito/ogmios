@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
   findIndex, map, isEqual, filter,
-  slice, trim, lowerCase, join
+  slice, trim, lowerCase
 } from 'lodash';
 
 import { fetchProjects } from '../actions/projects';
@@ -34,7 +34,7 @@ const getSuggestions = (value, projects, client) => {
   return inputLength === 0
     ? []
     : slice(filter(projects, project =>
-        isEqual(join(slice(lowerCase(project.name), 0, inputLength), ''), inputValue) &&
+        lowerCase(project.name).search(inputValue) > -1 &&
         isEqual(findIndex(client.projects, proj => isEqual(proj._id, project._id)), -1)),
       0, 5);
 }
@@ -48,11 +48,11 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
     <MenuItem selected={isHighlighted} component="div">
       {map(parts, (part, index) => {
         return part.highlight ? (
-          <span key={index} style={{ fontWeight: 300 }}>
+          <span key={index} style={{ fontWeight: 500 }}>
             {part.text}
           </span>
         ) : (
-          <strong key={index} style={{ fontWeight: 500 }}>
+          <strong key={index} style={{ fontWeight: 300 }}>
             {part.text}
           </strong>
         );

@@ -28,7 +28,7 @@ class ClientsToolBar extends Component {
     const { t, creating, clients } = this.props;
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="static" color="default">
           <Toolbar disableGutters>
             <Typography type="title" color="inherit" style={projectsToolbarTitleStyle}>
               {t('CLIENTS.title')}

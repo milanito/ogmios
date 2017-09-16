@@ -37,7 +37,7 @@ class User extends Component {
     const { user } = this.props;
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="static" color="accent">
           <Grid container direction="row">
             <Grid item xs>
               <Typography type="title" color="inherit" style={projectToolbarTitleStyle}>

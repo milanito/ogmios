@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { indexOf } from 'lodash';
+import { indexOf, isEmpty } from 'lodash';
 import { reduxForm, Field, reset } from 'redux-form';
 
 import { projectKeysAdd } from '../actions/keys';
 
-const renderField = ({ input, type, label }) => (
+const renderField = ({ input, type, label, meta: { touched, error } }) => (
   <TextField fullWidth
     label={label}
     type={type}
+    error={touched && !isEmpty(error)}
+    helperText={touched && error}
     {...input}
     />
 );

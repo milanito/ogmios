@@ -12,16 +12,18 @@ import { withRouter } from 'react-router-dom';
 import { last, split, isEqual } from 'lodash';
 
 import { canDeleteUser } from '../utils';
-import { projectUsersRemove, projectUsersUpdate } from '../actions/project';
 import { usersRemove } from '../actions/users';
+import { canModifyProject } from '../utils';
+import { projectUsersRemove, projectUsersUpdate } from '../actions/project';
 
 class UserCard extends Component {
   redirectToUser(id) {
-    const { user, project, token } = this.props;
+    const { user, project, token, userid, role } = this.props;
     if (!project) {
       this.props.history.push(`/user/${user._id}`);
     } else {
-      if (!isEqual(user.role, 'owner')) {
+      if (canModifyProject(userid, role, project) && !isEqual(user.role, 'owner') &&
+        !isEqual(user._id, userid)) {
         this.props.projectUsersUpdate(token, project._id, user._id,
           isEqual(user.role, 'normal') ? 'editor' : 'normal');
       }

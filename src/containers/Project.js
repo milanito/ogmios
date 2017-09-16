@@ -12,11 +12,12 @@ import ProjectMain from '../components/ProjectMain';
 import ProjectLocales from '../components/ProjectLocales';
 import ProjectKeys from '../components/ProjectKeys';
 import ProjectTranslations from '../components/ProjectTranslations';
-import { fetchProject, fetchProjectUsers } from '../actions/project';
 import { fetchProjectLocales } from '../actions/locales';
 import { fetchProjectKeys } from '../actions/keys';
 import { projectToolbarTitleStyle } from '../styles/project';
 import { clearLocales } from '../actions/translations';
+import { canModifyProject } from '../utils';
+import { fetchProject, fetchProjectUsers } from '../actions/project';
 
 class Project extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class Project extends Component {
   }
 
   renderProject() {
-    const { t, project } = this.props;
+    const { t, project, userid, role } = this.props;
     const { value } = this.state;
 
     return (
@@ -59,18 +60,18 @@ class Project extends Component {
             <Grid item xs>
               <Tabs value={value} onChange={this.handleChange()}>
                 <Tab label={t('PROJECT.tabDetails')} />
-                <Tab label={t('PROJECT.tabLocales')} />
-                <Tab label={t('PROJECT.tabKeys')} />
                 <Tab label={t('PROJECT.tabTranslations')} />
+                {canModifyProject(userid, role, project) && <Tab label={t('PROJECT.tabLocales')} />}
+                {canModifyProject(userid, role, project) && <Tab label={t('PROJECT.tabKeys')} />}
               </Tabs>
             </Grid>
           </Grid>
         </AppBar>
         <Paper>
           {value === 0 && <ProjectMain />}
-          {value === 1 && <ProjectLocales />}
-          {value === 2 && <ProjectKeys />}
-          {value === 3 && <ProjectTranslations />}
+          {value === 1 && <ProjectTranslations />}
+          {value === 2 && canModifyProject(userid, role, project) && <ProjectLocales />}
+          {value === 3 && canModifyProject(userid, role, project) && <ProjectKeys />}
         </Paper>
       </div>
     );
@@ -88,7 +89,9 @@ class Project extends Component {
 const mapStateToProps = (state) => ({
   project: state.project.item,
   fetching: state.project.fetching,
-  token: state.auth.token
+  token: state.auth.token,
+  role: state.auth.role,
+  userid: state.auth.userid,
 });
 
 const mapDispatchToProps = {

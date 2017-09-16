@@ -7,13 +7,12 @@ import parse from 'autosuggest-highlight/parse';
 import { MenuItem } from 'material-ui/Menu';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
 import {
-  findIndex, map, isEqual, filter,
-  slice, trim, lowerCase
+  map, filter,
+  slice
 } from 'lodash';
 
-import { fetchAllUsers } from '../actions/users';
-import { projectUsersAdd } from '../actions/project';
 import { suggestChoiceContainer } from '../styles/common';
 
 const renderField = ({ home, value, ref, label, ...other }) => (
@@ -27,23 +26,20 @@ const renderField = ({ home, value, ref, label, ...other }) => (
     }} />
 );
 
-const getSuggestions = (value, users, project) => {
-  const inputValue = lowerCase(trim(value));
+const getSuggestions = (value, projects) => {
+  const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
 
   return inputLength === 0
     ? []
-    : slice(filter(users, user =>
-        lowerCase(user.email).search(inputValue) > -1 &&
-        isEqual(findIndex(project.users, usr => isEqual(user._id, usr.user._id)), -1)),
+    : slice(filter(projects, project =>
+        project.name.toLowerCase().search(inputValue) > -1),
       0, 5);
-}
-
-const getSuggestionValue = suggestion => suggestion.email;
+};
 
 const renderSuggestion = (suggestion, { query, isHighlighted }) => {
-  const matches = match(suggestion.email, query);
-  const parts = parse(suggestion.email, matches);
+  const matches = match(suggestion.name, query);
+  const parts = parse(suggestion.name, matches);
   return (
     <MenuItem selected={isHighlighted} component="div">
       {map(parts, (part, index) => {
@@ -61,8 +57,10 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
   );
 }
 
+const getSuggestionValue = suggestion => suggestion.name;
+
 const renderSuggestionsContainer = (options) => {
-  const { containerProps, children  } = options;
+  const { containerProps, children } = options;
 
   return (
     <Paper {...containerProps} square style={suggestChoiceContainer}>
@@ -71,22 +69,18 @@ const renderSuggestionsContainer = (options) => {
   );
 };
 
-class AddUserProjectForm extends Component {
+class ProjectShortcut extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { email: '', suggestions: [] };
-  }
-
-  componentDidMount() {
-    this.props.fetchAllUsers(this.props.token);
+    this.state = { projectname: '', suggestions: [] };
   }
 
   handleSuggestionsFetchRequested() {
-    const { users, project } = this.props;
+    const { projects } = this.props;
     return ({ value }) => {
       this.setState({
-        suggestions: getSuggestions(value, users, project),
+        suggestions: getSuggestions(value, projects),
       });
     }
   }
@@ -101,26 +95,22 @@ class AddUserProjectForm extends Component {
 
   onChange() {
     return (event, { newValue }) => {
-      this.setState({ email: newValue });
+      this.setState({ projectname: newValue });
     };
   }
 
   selectValue() {
     return (event, { suggestion }) => {
       this.setState({ projectname: suggestion.name });
-      this.props.projectUsersAdd(this.props.token, this.props.project._id, {
-        user: suggestion._id,
-        role: 'normal'
-      });
-      this.setState({ email: '' });
+      this.props.history.push(`/project/${suggestion._id}`);
     };
   }
 
   render() {
     const { t } = this.props;
     const inputProps = {
-      placeholder: t('PROJECT.placeholderNewUser'),
-      value: this.state.email,
+      label: t('PROJECT.gotoProject'),
+      value: this.state.projectname,
       onChange: this.onChange()
     };
     return (
@@ -139,14 +129,10 @@ class AddUserProjectForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  project: state.project.item,
-  users: state.users.list,
-  token: state.auth.token
+  projects: state.projects.list,
 });
 
 const mapDispatchToProps = {
-  fetchAllUsers,
-  projectUsersAdd
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate()(AddUserProjectForm));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(translate()(ProjectShortcut)));

@@ -21,11 +21,18 @@ export const canDeleteProject = (userid, role, project) => {
 };
 
 export const canModifyProject = (userid, role, project) => {
-  const user = find(project.users, usr => isEqual(userid, usr.user));
+  const user = find(project.users, usr => isEqual(userid, usr.user._id));
 
   return isEqual(role, 'admin') ||
     isEqual(get(user, 'role', 'none'), 'owner') ||
     isEqual(get(user, 'role', 'none'), 'editor');
+};
+
+export const canAddUserToProject = (userid, role, project) => {
+  const user = find(project.users, usr => isEqual(userid, usr.user._id));
+
+  return isEqual(role, 'admin') ||
+    isEqual(get(user, 'role', 'none'), 'owner');
 };
 
 /*************** PARSING FUNCTIONS ***************/

@@ -12,6 +12,7 @@ import {
 } from 'lodash';
 
 import { clientUpdate } from '../actions/client';
+import { mainContainerStyle } from '../styles/client';
 
 class ClientMain extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class ClientMain extends Component {
   render() {
     const { t, client } = this.props;
     return (
-      <Paper>
+      <Paper style={mainContainerStyle}>
         <Grid container direction="column">
           <Grid item xs>
             <Grid container direction="row">
@@ -57,10 +58,14 @@ class ClientMain extends Component {
                   type="text" />
               </Grid>
               <Grid item xs>
-                <Button raised
-                  onClick={this.updateName.bind(this)}>
-                  {t('CLIENT.validate')}
-                </Button>
+                <Grid container direction="column" align="center">
+                  <Grid item xs>
+                    <Button raised
+                      onClick={this.updateName.bind(this)}>
+                      {t('CLIENT.validate')}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -74,13 +79,17 @@ class ClientMain extends Component {
                   type="text" />
               </Grid>
               <Grid item xs>
-                <CopyToClipboard
-                  onCopy={() => this.setState({ notif: true })}
-                  text={client.id}>
-                  <Button raised>
-                    {t('CLIENT.copy')}
-                  </Button>
-                </CopyToClipboard>
+                <Grid container direction="column" align="center">
+                  <Grid item xs>
+                    <CopyToClipboard
+                      onCopy={() => this.setState({ notif: true })}
+                      text={client.id}>
+                      <Button raised>
+                        {t('CLIENT.copy')}
+                      </Button>
+                    </CopyToClipboard>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -94,13 +103,17 @@ class ClientMain extends Component {
                   type="text" />
               </Grid>
               <Grid item xs>
-                <CopyToClipboard
-                  onCopy={() => this.setState({ notif: true })}
-                  text={client.token}>
-                  <Button raised>
-                    {t('CLIENT.copy')}
-                  </Button>
-                </CopyToClipboard>
+                <Grid container direction="column" align="center">
+                  <Grid item xs>
+                    <CopyToClipboard
+                      onCopy={() => this.setState({ notif: true })}
+                      text={client.token}>
+                      <Button raised>
+                        {t('CLIENT.copy')}
+                      </Button>
+                    </CopyToClipboard>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

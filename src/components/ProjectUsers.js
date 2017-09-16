@@ -8,10 +8,11 @@ import { map } from 'lodash';
 
 import UserCard from './UserCard';
 import AddUserProjectForm from './AddUserProjectForm';
+import { canAddUserToProject } from '../utils';
 
 class ProjectUsers extends Component {
   render() {
-    const { users, t, project } = this.props;
+    const { users, t, project, userid, role } = this.props;
     return (
       <Grid container direction="column">
         <Grid item xs>
@@ -20,7 +21,7 @@ class ProjectUsers extends Component {
           </Typography>
         </Grid>
         <Grid item xs>
-          <AddUserProjectForm />
+          {canAddUserToProject(userid, role, project) && <AddUserProjectForm />}
         </Grid>
         <Grid item xs>
           <List>
@@ -35,6 +36,8 @@ class ProjectUsers extends Component {
 const mapStateToProps = (state) => ({
   project: state.project.item,
   users: state.project.users,
+  role: state.auth.role,
+  userid: state.auth.userid,
 });
 
 const mapDispatchToProps = {

@@ -26,7 +26,7 @@ const getSuggestions = (value, locales) => {
   return inputLength === 0
     ? []
     : slice(filter(suggestions, suggestion =>
-        isEqual(suggestion.toLowerCase().slice(0, inputLength), inputValue) &&
+        suggestion.toLowerCase().search(inputValue) > -1 &&
         isEqual(findIndex(locales, locale => isEqual(locale.code, suggestion)), -1)),
       0, 5);
 };
@@ -49,11 +49,11 @@ const renderSuggestion = (suggestion, { query, isHighlighted }) => {
     <MenuItem selected={isHighlighted} component="div">
       {map(parts, (part, index) => {
         return part.highlight ? (
-          <span key={index} style={{ fontWeight: 300 }}>
+          <span key={index} style={{ fontWeight: 500 }}>
             {part.text}
           </span>
         ) : (
-          <strong key={index} style={{ fontWeight: 500 }}>
+          <strong key={index} style={{ fontWeight: 300 }}>
             {part.text}
           </strong>
         );

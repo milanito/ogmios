@@ -28,7 +28,7 @@ class UsersToolbar extends Component {
     const { t, creating, users } = this.props;
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="static" color="accent">
           <Toolbar disableGutters>
             <Typography type="title" color="inherit" style={projectsToolbarTitleStyle}>
               {t('USERS.title')}
